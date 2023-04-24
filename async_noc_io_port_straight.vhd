@@ -5,7 +5,7 @@ LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 USE work.defs.ALL;
 
-ENTITY async_noc_io_port_straight IS
+ENTITY asyncoc_io_port_straight IS
     GENERIC (
         DATA_WIDTH : INTEGER := 8
     );
@@ -14,19 +14,19 @@ ENTITY async_noc_io_port_straight IS
         reset : IN STD_LOGIC;
         start : IN STD_LOGIC;
 
-        -- 
-        rx_req_in_dem_N  : IN  STD_LOGIC;
-        rx_ack_out_dem_N : OUT STD_LOGIC;
-        rx_dat_in_N      : IN  STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        -- data
+        rx_req_in_dem  : IN  STD_LOGIC;
+        rx_ack_out_dem : OUT STD_LOGIC;
+        rx_dat_in      : IN  STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
 
-        tx_ack_in_arb_N  : IN  STD_LOGIC;
-        tx_req_out_arb_N : OUT STD_LOGIC;
-        tx_dat_out_N     : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0)
+        tx_ack_in_arb  : IN  STD_LOGIC;
+        tx_req_out_arb : OUT STD_LOGIC;
+        tx_dat_out     : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0)
     );
-END async_noc_io_port_straight;
+END asyncoc_io_port_straight;
 
-ARCHITECTURE async_noc_io_port_straight_arc OF async_noc_io_port_straight IS
+ARCHITECTURE asyncoc_io_port_straight_arc OF asyncoc_io_port_straight IS
 
 BEGIN
 
-END async_noc_io_port_straight_arc;
+END asyncoc_io_port_straight_arc;
