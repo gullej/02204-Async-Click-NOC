@@ -6,9 +6,6 @@ USE IEEE.STD_LOGIC_1164.ALL;
 USE work.defs.ALL;
 
 ENTITY asyncoc_io_port_diagonal IS
-    GENERIC (
-        DATA_WIDTH : INTEGER := 8
-    );
     PORT (
         -- control
         reset : IN STD_LOGIC;

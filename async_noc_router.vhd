@@ -6,9 +6,6 @@ USE IEEE.STD_LOGIC_1164.ALL;
 USE work.defs.ALL;
 
 ENTITY async_noc_router IS
-    GENERIC (
-        DATA_WIDTH : INTEGER := 8
-    );
     PORT (
         -- control
         reset : IN STD_LOGIC;
