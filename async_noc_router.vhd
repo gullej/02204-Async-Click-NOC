@@ -5,7 +5,7 @@ LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 USE work.defs.ALL;
 
-ENTITY async_nocrouter IS
+ENTITY async_noc_router IS
     GENERIC (
         DATA_WIDTH : INTEGER := 8
     );
@@ -95,10 +95,10 @@ ENTITY async_nocrouter IS
         rx_req_out_arb_L : OUT STD_LOGIC;
         rx_dat_out_L     : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0)
     );
-END async_nocrouter;
+END async_noc_router;
 
-ARCHITECTURE async_nocrouter_arc OF async_nocrouter IS
+ARCHITECTURE async_noc_router_arc OF async_noc_router IS
 
 BEGIN
 
-END async_nocrouter_arc;
+END async_noc_router_arc;
