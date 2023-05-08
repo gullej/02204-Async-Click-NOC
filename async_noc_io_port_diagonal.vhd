@@ -12,9 +12,9 @@ ENTITY asyncoc_io_port_diagonal IS
         start : IN STD_LOGIC;
 
         -- from local
-        rx_local_req_in  : IN  STD_LOGIC;
-        rx_local_ack_out : OUT STD_LOGIC;
-        rx_local_dat_in  : IN  STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        rx_local_req_in     : IN  STD_LOGIC;
+        rx_local_ack_out    : OUT STD_LOGIC;
+        rx_local_dat_in     : IN  STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
 
         -- from internal
         rx_internal_req_in  : IN STD_LOGIC;
@@ -62,9 +62,24 @@ SIGNAL ctrl_data_in_sel : STD_LOGIC_VECTOR(3 downto 0);
 BEGIN
 
 
-arbiter : entity work.
+arbiter_out : entity work.arbiter
+PORT MAP(
+    rst           => reset,
+    -- Input channel from local
+    inA_req       => rx_local_req_in,
+    inA_data      => rx_local_dat_in,
+    inA_ack       => rx_local_ack_out,
+    -- Input chann=> -- from internal,
+    inB_req       => rx_internal_req_in,
+    inB_data      => rx_internal_dat_in,
+    inB_ack       => rx_internal_ack_out,
+    -- Output chan=> ,
+    outC_req      => tx_external_req_in,
+    outC_data     => tx_external_dat_in,
+    outC_ack      => tx_external_ack_out
+);
 
-demux : entity work.DEMUX_four 
+demux_in : entity work.DEMUX_four 
 PORT MAP(
     rst => reset,
 
