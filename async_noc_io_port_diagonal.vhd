@@ -70,8 +70,8 @@ PORT MAP(
 
     -- Input port
     rx_req_in_A  => rx_external_req_in,
-    rx_data_in_A => rx_external_ack_out,
-    rx_ack_out_A => rx_external_dat_in,
+    rx_data_in_A => rx_external_dat_in,
+    rx_ack_out_A => rx_external_ack_out,
 
     -- Select port 
     ctrl_req_in_sel  => open,
@@ -80,23 +80,23 @@ PORT MAP(
 
     -- Output channel 1
     tx_req_out_B  => tx_local_req_in,
-    tx_data_out_B => tx_local_ack_out,
-    tx_ack_in_B   => tx_local_dat_in,
+    tx_data_out_B => tx_local_dat_in,
+    tx_ack_in_B   => tx_local_ack_out,
 
     -- Output channel 2
     tx_req_out_C  => tx_internal_0_req_in,
-    tx_data_out_C => tx_internal_0_ack_out,
-    tx_ack_in_C   => tx_internal_0_dat_in,
+    tx_data_out_C => tx_internal_0_dat_in,
+    tx_ack_in_C   => tx_internal_0_ack_out,
 
     -- Output channel 3
     tx_req_out_D  => tx_internal_1_req_in,
-    tx_data_out_D => tx_internal_1_ack_out,
-    tx_ack_in_D   => tx_internal_1_dat_in,
+    tx_data_out_D => tx_internal_1_dat_in,
+    tx_ack_in_D   => tx_internal_1_ack_out,
 
     -- Output channel 4
     tx_req_out_E  => tx_internal_2_req_in,
-    tx_data_out_E => tx_internal_2_ack_out,
-    tx_ack_in_E   => tx_internal_2_dat_in  
+    tx_data_out_E => tx_internal_2_dat_in,
+    tx_ack_in_E   => tx_internal_2_ack_out
 );
 
 END asyncoc_io_port_diagonal_arc;
