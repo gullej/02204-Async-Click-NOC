@@ -1,5 +1,5 @@
 --
--- Test bench for fibonacci circuit
+-- Test bench for DEMUX_four circuit
 --
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
