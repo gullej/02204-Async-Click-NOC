@@ -64,7 +64,7 @@ ENTITY DEMUX_eight IS
         tx_req_out_H  : OUT STD_LOGIC;
         tx_data_out_H : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
         tx_ack_in_H   : IN  STD_LOGIC;
-
+        
         -- Output channel 8
         tx_req_out_I  : OUT STD_LOGIC;
         tx_data_out_I : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
