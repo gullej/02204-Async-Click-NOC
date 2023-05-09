@@ -102,7 +102,7 @@ mux_sel_data(2) <= x and (not y)  AFTER AND2_DELAY + NOT1_DELAY;
 mux_sel_data(1) <= (not x) and y  AFTER AND2_DELAY + NOT1_DELAY;
 mux_sel_data(0) <= x and y  AFTER AND2_DELAY + NOT1_DELAY;
 
-mux_sel_ack     <=  fork_outC_ack;
+fork_outC_ack  <=  mux_sel_ack;
 
 fork_in : entity work.reg_fork
 Port map (
