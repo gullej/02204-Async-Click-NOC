@@ -156,14 +156,14 @@ mux_sel_req  <=  fork_outC_req after XOR_DELAY + OR2_DELAY*ADDR_WIDTH + AND2_DEL
 x_dest  <=  fork_outC_data(DATA_WIDTH-1 DOWNTO DATA_WIDTH-ADDR_WIDTH);
 y_dest  <=  fork_outC_data(DATA_WIDTH-ADDR_WIDTH-1 DOWNTO DATA_WIDTH-ADDR_WIDTH*2);
 
-mux_sel_data(7) <=  '1' when ((x_dest = ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y));
-mux_sel_data(6) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y));
-mux_sel_data(5) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y));
-mux_sel_data(4) <=  '1' when ((x_dest = ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y));
-mux_sel_data(3) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y));
-mux_sel_data(2) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y));
-mux_sel_data(1) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest = ROUTER_LOCATION_Y));
-mux_sel_data(0) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest = ROUTER_LOCATION_Y));
+mux_sel_data(7) <=  '1' when ((x_dest = ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y)) else '0';
+mux_sel_data(6) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y)) else '0';
+mux_sel_data(5) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y)) else '0';
+mux_sel_data(4) <=  '1' when ((x_dest = ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y)) else '0';
+mux_sel_data(3) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y)) else '0';
+mux_sel_data(2) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y)) else '0';
+mux_sel_data(1) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest = ROUTER_LOCATION_Y)) else '0';
+mux_sel_data(0) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest = ROUTER_LOCATION_Y)) else '0';
 
 fork_outC_ack  <=  mux_sel_ack;
 

@@ -1,5 +1,5 @@
 --
--- Test bench for DEMUX_four circuit
+-- Test bench for async noc router local port circuit
 --
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
@@ -26,9 +26,11 @@ ARCHITECTURE STRUCTURE OF asyncoc_io_port_local_tb IS
     SIGNAL arbiter_inLocal_req_TB    :  STD_LOGIC;
     SIGNAL arbiter_inLocal_ack_TB    :  STD_LOGIC;
     SIGNAL arbiter_inLocal_data_TB   :  STD_LOGIC_VECTOR(15 DOWNTO 0);
+
     SIGNAL arbiter_inA_req_TB        :  STD_LOGIC;
     SIGNAL arbiter_inA_ack_TB        :  STD_LOGIC;
     SIGNAL arbiter_inA_data_TB       :  STD_LOGIC_VECTOR(15 DOWNTO 0);
+
     SIGNAL arbiter_inB_req_TB        :  STD_LOGIC;
     SIGNAL arbiter_inB_ack_TB        :  STD_LOGIC;
     SIGNAL arbiter_inB_data_TB       :  STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -95,83 +97,90 @@ BEGIN
 
     stim : PROCESS
     BEGIN
-        inA_req_TB <= '0';
+        inA_req_TB<= '0';
+        arbiter_inA_req_TB <= '0';
+        arbiter_inB_req_TB <= '0';
+        arbiter_inC_req_TB <= '0';
+        arbiter_inD_req_TB <= '0';
+        arbiter_inE_req_TB <= '0';
+        arbiter_inF_req_TB <= '0';
+        arbiter_inG_req_TB <= '0';
         rst <= '1';
         WAIT FOR 100 ns;
         rst <= '0';
         WAIT FOR 100 ns;
 
         inA_req_TB <= '1';
-        data_in_TB <= "0000" & x"123";
+        data_in_TB <= "0000" & x"123"; -- down down, should go 
+
+        WAIT UNTIL inH_ack_TB = '1';
+
+        inA_req_TB <= '0';
+        
+        WAIT UNTIL inH_ack_TB = '0';
+
+        inA_req_TB <= '1';
+        data_in_TB <= "0001" & x"567"; -- down equal, should go 
+
+        WAIT UNTIL inC_ack_TB = '1';
+
+        inA_req_TB <= '0';
+
+        WAIT UNTIL inC_ack_TB = '0';
+
+        inA_req_TB <= '1';
+        data_in_TB <= "0100" & x"9AB"; -- equal down, should go
+
+        WAIT UNTIL inI_ack_TB = '1';
+
+        inA_req_TB <= '0';
+
+        WAIT UNTIL inI_ack_TB = '0';
+
+        inA_req_TB <= '1';
+        data_in_TB <= "0010" & x"DEF"; -- down up, should go 
 
         WAIT UNTIL inE_ack_TB = '1';
 
         inA_req_TB <= '0';
-        
+
+        WAIT UNTIL inE_ack_TB = '0';
+
+        inA_req_TB <= '1';
+        data_in_TB <= "1000" & x"9AB"; -- up down, should go 
+
+        WAIT UNTIL inG_ack_TB = '1';
+
+        inA_req_TB <= '0';
+
         WAIT FOR 50 ns;
 
         inA_req_TB <= '1';
-        data_in_TB <= "0101" & x"567";
+        data_in_TB <= "1010" & x"9AB"; -- up up, should go
 
         WAIT UNTIL inD_ack_TB = '1';
 
         inA_req_TB <= '0';
 
-        WAIT FOR 50 ns;
+        WAIT UNTIL inD_ack_TB = '0';
 
         inA_req_TB <= '1';
-        data_in_TB <= "0001" & x"9AB";
-
-        WAIT UNTIL inC_ack_TB = '1';
-
-        inA_req_TB <= '0';
-
-        WAIT FOR 50 ns;
-
-        inA_req_TB <= '1';
-        data_in_TB <= "0100" & x"DEF";
+        data_in_TB <= "1001" & x"9AB"; -- up equal, should go
 
         WAIT UNTIL inB_ack_TB = '1';
 
         inA_req_TB <= '0';
 
-        WAIT FOR 50 ns;
+        WAIT UNTIL inB_ack_TB = '0';
 
         inA_req_TB <= '1';
-        data_in_TB <= "1010" & x"9AB";
+        data_in_TB <= "0110" & x"9AB"; -- equal up, should go
 
-        WAIT UNTIL inC_ack_TB = '1';
+        WAIT UNTIL inF_ack_TB = '1';
 
         inA_req_TB <= '0';
 
-        WAIT FOR 50 ns;
-
-        inA_req_TB <= '1';
-        data_in_TB <= "0110" & x"9AB";
-
-        WAIT UNTIL inC_ack_TB = '1';
-
-        inA_req_TB <= '0';
-
-        WAIT FOR 50 ns;
-
-        inA_req_TB <= '1';
-        data_in_TB <= "1001" & x"9AB";
-
-        WAIT UNTIL inC_ack_TB = '1';
-
-        inA_req_TB <= '0';
-
-        WAIT FOR 50 ns;
-
-        inA_req_TB <= '1';
-        data_in_TB <= "1111" & x"9AB";
-
-        WAIT UNTIL inC_ack_TB = '1';
-
-        inA_req_TB <= '0';
-
-        WAIT FOR 50 ns;
+        WAIT UNTIL inF_ack_TB = '0';
         ASSERT 0 = 1 REPORT "Bye" SEVERITY failure;
     END PROCESS;
 
@@ -179,7 +188,7 @@ BEGIN
     GENERIC MAP (
         LOCATION_X               =>  1,
         LOCATION_Y               =>  1,
-        ADDR_WIDTH               =>  2,
+        ADDR_WIDTH               =>  2
     )
     PORT MAP (
         -- control
@@ -199,24 +208,24 @@ BEGIN
         rx_internal_b_dat_in     =>  arbiter_inB_data_TB,
         -- from internal c
         rx_internal_c_req_in     =>  arbiter_inC_req_TB ,
-        rx_internal_c_dat_in     =>  arbiter_inC_ack_TB ,
-        rx_internal_c_ack_out    =>  arbiter_inC_data_TB,
+        rx_internal_c_dat_in     =>   arbiter_inC_data_TB,
+        rx_internal_c_ack_out    =>  arbiter_inC_ack_TB,
         -- from internal d
         rx_internal_d_req_in     =>  arbiter_inD_req_TB ,
-        rx_internal_d_dat_in     =>  arbiter_inD_ack_TB ,
-        rx_internal_d_ack_out    =>  arbiter_inD_data_TB,
+        rx_internal_d_dat_in     =>  arbiter_inD_data_TB ,
+        rx_internal_d_ack_out    =>  arbiter_inD_ack_TB,
 
         rx_internal_e_req_in     =>  arbiter_inE_req_TB ,
-        rx_internal_e_dat_in     =>  arbiter_inE_ack_TB ,
-        rx_internal_e_ack_out    =>  arbiter_inE_data_TB,
+        rx_internal_e_dat_in     =>  arbiter_inE_data_TB ,
+        rx_internal_e_ack_out    =>  arbiter_inE_ack_TB,
 
         rx_internal_f_req_in     =>  arbiter_inF_req_TB ,
-        rx_internal_f_dat_in     =>  arbiter_inF_ack_TB ,
-        rx_internal_f_ack_out    =>  arbiter_inF_data_TB,
+        rx_internal_f_dat_in     =>  arbiter_inF_data_TB ,
+        rx_internal_f_ack_out    =>  arbiter_inF_ack_TB,
 
         rx_internal_g_req_in     =>  arbiter_inG_req_TB ,
-        rx_internal_g_dat_in     =>  arbiter_inG_ack_TB ,
-        rx_internal_g_ack_out    =>  arbiter_inG_data_TB,
+        rx_internal_g_dat_in     =>  arbiter_inG_data_TB ,
+        rx_internal_g_ack_out    =>  arbiter_inG_ack_TB,
 
         -- from external
         rx_external_req_in       =>  inA_req_TB,
@@ -257,7 +266,7 @@ BEGIN
         -- to internal 7
         tx_internal_7_req_in     =>  inI_req_TB,
         tx_internal_7_ack_out    =>  inI_ack_TB,
-        tx_internal_7_dat_in     =>  data_i_TB,
+        tx_internal_7_dat_in     =>  data_i_TB
     );
 
     END STRUCTURE;

@@ -120,7 +120,7 @@ Port map (
   outC_ack    =>  fork_outC_ack 
   );
 
-arbiter_a : entity work.arbiter
+arbiter_a : entity work.ARBITER
 PORT MAP(
     rst           => reset,
     -- Input channel from local
@@ -137,7 +137,7 @@ PORT MAP(
     outC_ack      => arbiter_a_ack_out
 );
 
-arbiter_b : entity work.arbiter
+arbiter_b : entity work.ARBITER
 PORT MAP(
     rst           => reset,
     -- Input channel from internal b
@@ -154,7 +154,7 @@ PORT MAP(
     outC_ack      => arbiter_b_ack_out
 );
 
-arbiter_out : entity work.arbiter
+arbiter_out : entity work.ARBITER
 PORT MAP(
     rst           => reset,
     -- Input channel from arbiter a
