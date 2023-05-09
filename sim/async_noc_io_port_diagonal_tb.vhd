@@ -11,8 +11,6 @@ END async_noc_io_port_diagonal_tb;
 ARCHITECTURE STRUCTURE OF async_noc_io_port_diagonal_tb IS
 
     SIGNAL rst : STD_LOGIC;
-    SIGNAL sel_req, sel_ack : STD_LOGIC;
-    SIGNAL selector_TB : STD_LOGIC_VECTOR(3 DOWNTO 0);
     SIGNAL inA_req_TB, inA_ack_TB : STD_LOGIC;
     SIGNAL inB_req_TB, inB_ack_TB : STD_LOGIC;
     SIGNAL inC_req_TB, inC_ack_TB : STD_LOGIC;
@@ -33,7 +31,6 @@ ARCHITECTURE STRUCTURE OF async_noc_io_port_diagonal_tb IS
     
 
     ATTRIBUTE dont_touch : STRING;
-    ATTRIBUTE dont_touch OF sel_req, sel_ack : SIGNAL IS "true";
     ATTRIBUTE dont_touch OF inA_req_TB, inA_ack_TB : SIGNAL IS "true";
     ATTRIBUTE dont_touch OF inB_req_TB, inB_ack_TB : SIGNAL IS "true";
     ATTRIBUTE dont_touch OF inC_req_TB, inC_ack_TB : SIGNAL IS "true";
@@ -71,7 +68,6 @@ BEGIN
         WAIT UNTIL inE_ack_TB = '1';
 
         inA_req_TB <= '0';
-        sel_req <= '0';
         
         WAIT FOR 50 ns;
 
@@ -81,7 +77,6 @@ BEGIN
         WAIT UNTIL inD_ack_TB = '1';
 
         inA_req_TB <= '0';
-        sel_req <= '0';
 
         WAIT FOR 50 ns;
 
@@ -91,7 +86,6 @@ BEGIN
         WAIT UNTIL inC_ack_TB = '1';
 
         inA_req_TB <= '0';
-        sel_req <= '0';
 
         WAIT FOR 50 ns;
 
@@ -101,19 +95,18 @@ BEGIN
         WAIT UNTIL inB_ack_TB = '1';
 
         inA_req_TB <= '0';
-        sel_req <= '0';
 
         WAIT FOR 50 ns;
         ASSERT 0 = 1 REPORT "Bye" SEVERITY failure;
     END PROCESS;
 
     diagonal_DUT : entity work.asyncoc_io_port_diagonal
-        GENERIC (
+        GENERIC MAP (
             LOCATION_X            =>  1,
             LOCATION_Y            =>  1,
-            ADDR_WIDTH            =>  2,
-        );
-        PORT (
+            ADDR_WIDTH            =>  2
+        )
+        PORT MAP (
             -- control
             reset                 =>  rst,
             start                 =>  '0',
@@ -135,20 +128,20 @@ BEGIN
             tx_external_dat_in    =>  arbiter_outA_data_TB,
             -- to local
             tx_local_req_in       =>  inB_req_TB,
-            tx_local_ack_out      =>  data_b_TB,
-            tx_local_dat_in       =>  inB_ack_TB,
+            tx_local_ack_out      =>  inB_ack_TB,
+            tx_local_dat_in       =>  data_b_TB,
             -- to internal 1
             tx_internal_0_req_in  =>  inC_req_TB,
-            tx_internal_0_ack_out =>  data_c_TB,
-            tx_internal_0_dat_in  =>  inC_ack_TB,
+            tx_internal_0_ack_out =>  inC_ack_TB,
+            tx_internal_0_dat_in  =>  data_c_TB,
             -- to internal 1
             tx_internal_1_req_in  =>  inD_req_TB,
-            tx_internal_1_ack_out =>  data_d_TB,
-            tx_internal_1_dat_in  =>  inD_ack_TB,
+            tx_internal_1_ack_out =>  inD_ack_TB,
+            tx_internal_1_dat_in  =>  data_d_TB,
             -- to internal 1
             tx_internal_2_req_in  =>  inE_req_TB,
-            tx_internal_2_ack_out =>  data_e_TB,
-            tx_internal_2_dat_in  =>  inE_ack_TB
+            tx_internal_2_ack_out =>  inE_ack_TB,
+            tx_internal_2_dat_in  =>  data_e_TB
         );
 
     END STRUCTURE;

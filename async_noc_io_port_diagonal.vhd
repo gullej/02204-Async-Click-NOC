@@ -3,6 +3,7 @@
 ----------------------------------------------------------------------------------
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.numeric_std.ALL;
 USE work.defs.ALL;
 
 ENTITY asyncoc_io_port_diagonal IS
@@ -82,8 +83,8 @@ SIGNAL mux_sel_ack   :  STD_LOGIC;
 SIGNAL x : STD_LOGIC;
 SIGNAL y : STD_LOGIC;
 
-SIGNAL x_dest  :  STD_LOGIC_VECTOR(ADDR_WIDTH); 
-SIGNAL y_dest  :  STD_LOGIC_VECTOR(ADDR_WIDTH); 
+SIGNAL x_dest  :  STD_LOGIC_VECTOR(ADDR_WIDTH-1 DOWNTO 0); 
+SIGNAL y_dest  :  STD_LOGIC_VECTOR(ADDR_WIDTH-1 DOWNTO 0); 
 
 BEGIN
 
