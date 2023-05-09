@@ -130,7 +130,7 @@ ARCHITECTURE asyncoc_io_port_straight_arc OF asyncoc_io_port_local_arc IS
 BEGIN
 
 demux8_in : entity work.DEMUZ_eight
-PORT (
+PORT MAP(
     rst             =>  reset,
     -- Input port
     rx_req_in_A     =>  rx_external_req_in,

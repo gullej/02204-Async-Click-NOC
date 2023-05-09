@@ -16,7 +16,8 @@ entity reg_fork is
     VALUE: natural := 0;
     PHASE_INIT_A : std_logic := '0';
     PHASE_INIT_B : std_logic := '0';
-    PHASE_INIT_C : std_logic := '0');
+    PHASE_INIT_C : std_logic := '0'
+    );
   Port (
     rst : in std_logic;
     --Input channel
@@ -30,7 +31,8 @@ entity reg_fork is
     --Output channel 2
     outC_req    : out std_logic;
     outC_data   : out std_logic_vector(DATA_WIDTH-1 downto 0);
-    outC_ack    : in std_logic );
+    outC_ack    : in std_logic 
+    );
   end reg_fork;
 
 architecture Behavioral of reg_fork is
