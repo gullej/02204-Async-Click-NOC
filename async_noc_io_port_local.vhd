@@ -3,6 +3,7 @@
 ----------------------------------------------------------------------------------
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.numeric_std.ALL;
 USE work.defs.ALL;
 
 ENTITY asyncoc_io_port_local_arc IS
@@ -137,6 +138,10 @@ ARCHITECTURE asyncoc_io_port_straight_arc OF asyncoc_io_port_local_arc IS
     SIGNAL arbiter_f_ack_out : STD_LOGIC;
 
 
+    SIGNAL fork_outB_req   :  STD_LOGIC;
+    SIGNAL fork_outB_data  :  STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
+    SIGNAL fork_outB_ack   :  STD_LOGIC;
+
     SIGNAL fork_outC_req   :  STD_LOGIC;
     SIGNAL fork_outC_data  :  STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
     SIGNAL fork_outC_ack   :  STD_LOGIC;
@@ -190,7 +195,7 @@ Port map (
   outC_ack    =>  fork_outC_ack 
   );
 
-demux8_in : entity work.DEMUZ_eight
+demux8_in : entity work.DEMUX_eight
 PORT MAP(
     rst               =>  reset,
     -- Input port
@@ -232,7 +237,7 @@ PORT MAP(
     -- Output chan
     tx_req_out_I      =>  tx_internal_7_req_in ,
     tx_data_out_I     =>  tx_internal_7_dat_in ,
-    tx_ack_in_I       =>  tx_internal_7_ack_out,
+    tx_ack_in_I       =>  tx_internal_7_ack_out
 );
 
 
@@ -284,7 +289,7 @@ PORT MAP(
     -- Output channel
     outC_req      => arbiter_c_req_in,
     outC_data     => arbiter_c_dat_in,
-    outC_ack      => arbiter_c_ack_out,
+    outC_ack      => arbiter_c_ack_out
 );
 
 --4:1 arbiter
@@ -297,13 +302,13 @@ PORT MAP(
     inA_data      => rx_internal_d_dat_in ,
     inA_ack       => rx_internal_d_ack_out,
     -- Input channel from internal a
-    inB_req       => rx_internal_e_req_in 
-    inB_data      => rx_internal_e_dat_in 
-    inB_ack       => rx_internal_e_ack_out
+    inB_req       => rx_internal_e_req_in ,
+    inB_data      => rx_internal_e_dat_in ,
+    inB_ack       => rx_internal_e_ack_out,
     -- Output channel to arbiter_out
     outC_req      => arbiter_d_req_in ,
     outC_data     => arbiter_d_dat_in ,
-    outC_ack      => arbiter_d_ack_out,
+    outC_ack      => arbiter_d_ack_out
 );
 
 arbiter_e : entity work.arbiter
@@ -320,7 +325,7 @@ PORT MAP(
     -- Output channel to arbiter_out
     outC_req      => arbiter_e_req_in ,
     outC_data     => arbiter_e_dat_in ,
-    outC_ack      => arbiter_e_ack_out,
+    outC_ack      => arbiter_e_ack_out
 );
 
 arbiter_f : entity work.arbiter
@@ -337,12 +342,12 @@ PORT MAP(
     -- Output channel
     outC_req      => arbiter_f_req_in,
     outC_data     => arbiter_f_dat_in,
-    outC_ack      => arbiter_f_ack_out,
+    outC_ack      => arbiter_f_ack_out
 );
 
 --out
 
-arbiter_f : entity work.arbiter
+arbiter_g : entity work.arbiter
 PORT MAP(
     rst           => reset,
     -- Input channel from arbiter a
@@ -356,7 +361,7 @@ PORT MAP(
     -- Output channel
     outC_req      => tx_external_req_in,
     outC_data     => tx_external_dat_in,
-    outC_ack      => tx_external_ack_out,
+    outC_ack      => tx_external_ack_out
 );
 
 END asyncoc_io_port_straight_arc;
