@@ -6,7 +6,7 @@ USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.numeric_std.ALL;
 USE work.defs.ALL;
 
-ENTITY asyncoc_io_port_local_arc IS
+ENTITY asyncoc_io_port_local IS
     GENERIC (
         LOCATION_X            :  integer;
         LOCATION_Y            :  integer;
@@ -59,11 +59,6 @@ ENTITY asyncoc_io_port_local_arc IS
         rx_external_ack_out : OUT STD_LOGIC;
         rx_external_dat_in  : IN  STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
 
-        -- Control from external
-        rx_external_ctrl_req_in  : IN  STD_LOGIC;
-        rx_external_ctrl_dat_in  : IN  STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
-        rx_external_ctrl_ack_out : OUT STD_LOGIC;
-
         -- to external
         tx_external_req_in  : OUT STD_LOGIC;
         tx_external_ack_out : IN  STD_LOGIC;
@@ -109,9 +104,9 @@ ENTITY asyncoc_io_port_local_arc IS
         tx_internal_7_ack_out : IN  STD_LOGIC;
         tx_internal_7_dat_in  : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0)
     );
-END asyncoc_io_port_local_arc;
+END asyncoc_io_port_local;
 
-ARCHITECTURE asyncoc_io_port_straight_arc OF asyncoc_io_port_local_arc IS
+ARCHITECTURE asyncoc_io_port_straight_arc OF asyncoc_io_port_local IS
 
     CONSTANT ROUTER_LOCATION_X  :  STD_LOGIC_VECTOR(ADDR_WIDTH-1 DOWNTO 0) := STD_LOGIC_VECTOR(to_unsigned(LOCATION_X,ADDR_WIDTH));
     CONSTANT ROUTER_LOCATION_Y  :  STD_LOGIC_VECTOR(ADDR_WIDTH-1 DOWNTO 0) := STD_LOGIC_VECTOR(to_unsigned(LOCATION_y,ADDR_WIDTH));
@@ -151,9 +146,6 @@ ARCHITECTURE asyncoc_io_port_straight_arc OF asyncoc_io_port_local_arc IS
     SIGNAL mux_sel_data  :  STD_LOGIC_VECTOR(7 DOWNTO 0);
     SIGNAL mux_sel_ack   :  STD_LOGIC;
 
-    SIGNAL x : STD_LOGIC;
-    SIGNAL y : STD_LOGIC;
-
     SIGNAL x_dest  :  STD_LOGIC_VECTOR(ADDR_WIDTH-1 DOWNTO 0); 
     SIGNAL y_dest  :  STD_LOGIC_VECTOR(ADDR_WIDTH-1 DOWNTO 0); 
 
@@ -163,9 +155,6 @@ mux_sel_req  <=  fork_outC_req after XOR_DELAY + OR2_DELAY*ADDR_WIDTH + AND2_DEL
 
 x_dest  <=  fork_outC_data(DATA_WIDTH-1 DOWNTO DATA_WIDTH-ADDR_WIDTH);
 y_dest  <=  fork_outC_data(DATA_WIDTH-ADDR_WIDTH-1 DOWNTO DATA_WIDTH-ADDR_WIDTH*2);
-
---x <= or(x_dest xor ROUTER_LOCATION_X) AFTER XOR_DELAY + OR2_DELAY*ADDR_WIDTH;
---y <= or(y_dest xor ROUTER_LOCATION_Y) AFTER XOR_DELAY + OR2_DELAY*ADDR_WIDTH;
 
 mux_sel_data(7) <=  '1' when ((x_dest = ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y));
 mux_sel_data(6) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y));
