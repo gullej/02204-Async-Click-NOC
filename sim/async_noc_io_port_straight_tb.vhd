@@ -5,10 +5,10 @@ LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 USE work.defs.ALL;
 
-ENTITY asyncoc_io_port_straight IS
-END asyncoc_io_port_straight;
+ENTITY asyncoc_io_port_straight_tb IS
+END asyncoc_io_port_straight_tb;
 
-ARCHITECTURE STRUCTURE OF asyncoc_io_port_straight IS
+ARCHITECTURE STRUCTURE OF asyncoc_io_port_straight_tb IS
 
     SIGNAL rst : STD_LOGIC;
     SIGNAL inA_req_TB, inA_ack_TB : STD_LOGIC;
@@ -82,7 +82,7 @@ BEGIN
 
         inA_req_TB <= '0';
         
-        WAIT FOR 50 ns;
+        WAIT UNTIL inE_ack_TB = '0';
 
         inA_req_TB <= '1';
         data_in_TB <= "0101" & x"567";
@@ -91,46 +91,27 @@ BEGIN
 
         inA_req_TB <= '0';
 
-        WAIT FOR 50 ns;
-
-        inA_req_TB <= '1';
-        data_in_TB <= "0001" & x"9AB";
-
-        WAIT UNTIL inC_ack_TB = '1';
-
-        inA_req_TB <= '0';
-
-        WAIT FOR 50 ns;
-
-        inA_req_TB <= '1';
-        data_in_TB <= "0100" & x"DEF";
-
-        WAIT UNTIL inB_ack_TB = '1';
-
-        inA_req_TB <= '0';
-
-        WAIT FOR 50 ns;
+        WAIT UNTIL inD_ack_TB = '0';
         ASSERT 0 = 1 REPORT "Bye" SEVERITY failure;
     END PROCESS;
 
     diagonal_DUT : entity work.asyncoc_io_port_straight
-        GENERIC (
+        GENERIC MAP (
             LOCATION_X             =>  1,
             LOCATION_Y             =>  1,
-            ADDR_WIDTH             =>  2,
-        );
-        PORT (
+            ADDR_WIDTH             =>  2
+        )
+        PORT MAP(
             -- control
             reset                  =>  rst,
-            start                  =>  '0',
             -- from local
             rx_local_req_in        =>  arbiter_inA_req_TB ,
             rx_local_ack_out       =>  arbiter_inA_ack_TB ,
             rx_local_dat_in        =>  arbiter_inA_data_TB,
             -- from internal a
-            rx_internal_a_req_in   =>  rbiter_inB_req_TB ,
-            rx_internal_a_ack_out  =>  rbiter_inB_ack_TB ,
-            rx_internal_a_dat_in   =>  rbiter_inB_data_TB,
+            rx_internal_a_req_in   =>  arbiter_inB_req_TB ,
+            rx_internal_a_ack_out  =>  arbiter_inB_ack_TB ,
+            rx_internal_a_dat_in   =>  arbiter_inB_data_TB,
             -- from internal b
             rx_internal_b_req_in   =>  arbiter_inC_req_TB ,
             rx_internal_b_ack_out  =>  arbiter_inC_ack_TB ,

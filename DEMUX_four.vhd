@@ -26,22 +26,22 @@ ENTITY DEMUX_four IS
         ctrl_data_in_sel : IN  STD_LOGIC_VECTOR(3 DOWNTO 0);
         ctrl_ack_out_sel : OUT STD_LOGIC;
 
-        -- Output channel 1
+        -- Output channel 1, chosen by ctrl_data_in_sel(0)
         tx_req_out_B  : OUT STD_LOGIC;
         tx_data_out_B : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
         tx_ack_in_B   : IN  STD_LOGIC;
 
-        -- Output channel 2
+        -- Output channel 2, chosen by ctrl_data_in_sel(1)
         tx_req_out_C  : OUT STD_LOGIC;
         tx_data_out_C : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
         tx_ack_in_C   : IN  STD_LOGIC;
 
-        -- Output channel 3
+        -- Output channel 3, chosen by ctrl_data_in_sel(2)
         tx_req_out_D  : OUT STD_LOGIC;
         tx_data_out_D : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
         tx_ack_in_D   : IN  STD_LOGIC;
 
-        -- Output channel 4
+        -- Output channel 4, chosen by ctrl_data_in_sel(3)
         tx_req_out_E  : OUT STD_LOGIC;
         tx_data_out_E : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
         tx_ack_in_E   : IN  STD_LOGIC

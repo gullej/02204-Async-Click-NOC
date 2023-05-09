@@ -3,6 +3,7 @@
 ----------------------------------------------------------------------------------
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.numeric_std.ALL;
 USE work.defs.ALL;
 
 ENTITY asyncoc_io_port_straight IS
@@ -14,7 +15,6 @@ ENTITY asyncoc_io_port_straight IS
     PORT (
         -- control
         reset                  : IN STD_LOGIC;
-        start                  : IN STD_LOGIC;
 
         -- from local
         rx_local_req_in        : IN  STD_LOGIC;
@@ -51,7 +51,7 @@ ENTITY asyncoc_io_port_straight IS
         tx_local_ack_out      : IN  STD_LOGIC;
         tx_local_dat_in       : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
 
-        -- to internal 1
+        -- to internal straight
         tx_internal_0_req_in  : OUT STD_LOGIC;
         tx_internal_0_ack_out : IN  STD_LOGIC;
         tx_internal_0_dat_in  : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0)
@@ -99,6 +99,8 @@ x <= or(x_dest xor ROUTER_LOCATION_X) AFTER XOR_DELAY + OR2_DELAY*ADDR_WIDTH;
 y <= or(y_dest xor ROUTER_LOCATION_Y) AFTER XOR_DELAY + OR2_DELAY*ADDR_WIDTH;
 
 mux_sel_data(0) <= (not x) and (not y)  AFTER AND2_DELAY + NOT1_DELAY;
+
+fork_outC_ack  <=  mux_sel_ack;
 
 
 fork_in : entity work.reg_fork
@@ -178,9 +180,9 @@ PORT MAP(
     inA_data =>  fork_outB_data, 
     inA_ack  =>  fork_outB_ack ,  
     -- Select port
-    inSel_req   => arbiter_a_req_in,
-    inSel_ack   => arbiter_a_ack_out,
-    selector    => arbiter_a_dat_in(0)
+    inSel_req   => mux_sel_req,
+    inSel_ack   => mux_sel_ack,
+    selector    => mux_sel_data(0),
     -- Output chan
     outB_req  =>  tx_local_req_in,   
     outB_data =>  tx_local_dat_in,   

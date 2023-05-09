@@ -12,12 +12,12 @@ ARCHITECTURE STRUCTURE OF async_noc_io_port_diagonal_tb IS
 
     SIGNAL rst : STD_LOGIC;
     SIGNAL inA_req_TB, inA_ack_TB : STD_LOGIC;
-    SIGNAL inB_req_TB, inB_ack_TB : STD_LOGIC;
-    SIGNAL inC_req_TB, inC_ack_TB : STD_LOGIC;
-    SIGNAL inD_req_TB, inD_ack_TB : STD_LOGIC;
-    SIGNAL inE_req_TB, inE_ack_TB : STD_LOGIC;
+    SIGNAL inDiag_req_TB, inDIag_ack_TB : STD_LOGIC;
+    SIGNAL inYDir_req_TB, inYDir_ack_TB : STD_LOGIC;
+    SIGNAL inXDir_req_TB, inXDir_ack_TB : STD_LOGIC;
+    SIGNAL inLocal_req_TB, inLocal_ack_TB : STD_LOGIC;
     SIGNAL data_in_TB : STD_LOGIC_VECTOR(15 DOWNTO 0);
-    SIGNAL data_b_TB, data_c_TB, data_d_TB, data_e_TB : STD_LOGIC_VECTOR(15 DOWNTO 0);
+    SIGNAL data_Diag_TB, data_YDir_TB, data_XDir_TB, data_Local_TB : STD_LOGIC_VECTOR(15 DOWNTO 0);
 
     SIGNAL arbiter_inA_req_TB    :  STD_LOGIC;
     SIGNAL arbiter_inA_ack_TB    :  STD_LOGIC;
@@ -32,10 +32,10 @@ ARCHITECTURE STRUCTURE OF async_noc_io_port_diagonal_tb IS
 
     ATTRIBUTE dont_touch : STRING;
     ATTRIBUTE dont_touch OF inA_req_TB, inA_ack_TB : SIGNAL IS "true";
-    ATTRIBUTE dont_touch OF inB_req_TB, inB_ack_TB : SIGNAL IS "true";
-    ATTRIBUTE dont_touch OF inC_req_TB, inC_ack_TB : SIGNAL IS "true";
-    ATTRIBUTE dont_touch OF inD_req_TB, inD_ack_TB : SIGNAL IS "true";
-    ATTRIBUTE dont_touch OF inE_req_TB, inE_ack_TB : SIGNAL IS "true";
+    ATTRIBUTE dont_touch OF inDiag_req_TB, inDiag_ack_TB : SIGNAL IS "true";
+    ATTRIBUTE dont_touch OF inYDir_req_TB, inYDir_ack_TB : SIGNAL IS "true";
+    ATTRIBUTE dont_touch OF inXDir_req_TB, inXDir_ack_TB : SIGNAL IS "true";
+    ATTRIBUTE dont_touch OF inLocal_req_TB, inLocal_ack_TB : SIGNAL IS "true";
 
     ATTRIBUTE dont_touch of arbiter_inA_req_TB    :  SIGNAL IS "true";
     ATTRIBUTE dont_touch of arbiter_inA_ack_TB    :  SIGNAL IS "true";
@@ -49,10 +49,10 @@ ARCHITECTURE STRUCTURE OF async_noc_io_port_diagonal_tb IS
 
 BEGIN
 
-    inB_ack_TB <= inB_req_TB AFTER 10 ns;
-    inC_ack_TB <= inC_req_TB AFTER 10 ns;
-    inD_ack_TB <= inD_req_TB AFTER 10 ns;
-    inE_ack_TB <= inE_req_TB AFTER 10 ns;
+    inDiag_ack_TB <= inDiag_req_TB AFTER 10 ns;
+    inYDir_ack_TB <= inYDir_req_TB AFTER 10 ns;
+    inXDir_ack_TB <= inXDir_req_TB AFTER 10 ns;
+    inLocal_ack_TB <= inLocal_req_TB AFTER 10 ns;
 
     stim : PROCESS
     BEGIN
@@ -63,40 +63,40 @@ BEGIN
         WAIT FOR 100 ns;
 
         inA_req_TB <= '1';
-        data_in_TB <= "0000" & x"123";
+        data_in_TB <= "0000" & x"123"; -- both are not equal to the location of the router
 
-        WAIT UNTIL inE_ack_TB = '1';
+        WAIT UNTIL inDiag_ack_TB = '1'; -- it should therefore come out of the diagonal port
 
         inA_req_TB <= '0';
         
-        WAIT FOR 50 ns;
+        WAIT UNTIL inDiag_ack_TB = '0'; 
 
         inA_req_TB <= '1';
-        data_in_TB <= "0101" & x"567";
+        data_in_TB <= "0101" & x"567"; -- both are equal to the location of the router
 
-        WAIT UNTIL inD_ack_TB = '1';
+        WAIT UNTIL inLocal_ack_TB = '1'; -- it should therefore come out of the local port
 
         inA_req_TB <= '0';
 
-        WAIT FOR 50 ns;
+        WAIT UNTIL inLocal_ack_TB = '0';
 
         inA_req_TB <= '1';
-        data_in_TB <= "0001" & x"9AB";
+        data_in_TB <= "0001" & x"9AB"; -- x is unequal, y is equal to the location of the router
 
-        WAIT UNTIL inC_ack_TB = '1';
+        WAIT UNTIL inXDir_ack_TB = '1'; -- it should therefore come out of the x-direction port
 
         inA_req_TB <= '0';
 
-        WAIT FOR 50 ns;
+        WAIT UNTIL inXDir_ack_TB = '0';
 
         inA_req_TB <= '1';
-        data_in_TB <= "0100" & x"DEF";
+        data_in_TB <= "0100" & x"DEF"; -- x is equal, y is unequal to the location of the port
 
-        WAIT UNTIL inB_ack_TB = '1';
+        WAIT UNTIL inYDir_ack_TB = '1'; -- it should therefore come out of the y-direction port
 
         inA_req_TB <= '0';
 
-        WAIT FOR 50 ns;
+        WAIT UNTIL inYDir_ack_TB = '0';
         ASSERT 0 = 1 REPORT "Bye" SEVERITY failure;
     END PROCESS;
 
@@ -109,7 +109,6 @@ BEGIN
         PORT MAP (
             -- control
             reset                 =>  rst,
-            start                 =>  '0',
             -- from local
             rx_local_req_in       =>  arbiter_inA_req_TB ,
             rx_local_ack_out      =>  arbiter_inA_ack_TB ,
@@ -126,22 +125,22 @@ BEGIN
             tx_external_req_in    =>  arbiter_outA_req_TB ,
             tx_external_ack_out   =>  arbiter_outA_ack_TB ,
             tx_external_dat_in    =>  arbiter_outA_data_TB,
-            -- to local
-            tx_local_req_in       =>  inB_req_TB,
-            tx_local_ack_out      =>  inB_ack_TB,
-            tx_local_dat_in       =>  data_b_TB,
-            -- to internal 1
-            tx_internal_0_req_in  =>  inC_req_TB,
-            tx_internal_0_ack_out =>  inC_ack_TB,
-            tx_internal_0_dat_in  =>  data_c_TB,
-            -- to internal 1
-            tx_internal_1_req_in  =>  inD_req_TB,
-            tx_internal_1_ack_out =>  inD_ack_TB,
-            tx_internal_1_dat_in  =>  data_d_TB,
-            -- to internal 1
-            tx_internal_2_req_in  =>  inE_req_TB,
-            tx_internal_2_ack_out =>  inE_ack_TB,
-            tx_internal_2_dat_in  =>  data_e_TB
+            -- to internal diagonal port
+            tx_internal_diag_req_in         =>  inDiag_req_TB,
+            tx_internal_diag_ack_out        =>  inDiag_ack_TB,
+            tx_internal_diag_dat_in         =>  data_Diag_TB,
+            -- to internal y-direction port
+            tx_internal_ydir_req_in         =>  inYDir_req_TB,
+            tx_internal_ydir_ack_out        =>  inYDIR_ack_TB,
+            tx_internal_ydir_dat_in         =>  data_YDIR_TB,
+            -- to internal x-direction port
+            tx_internal_xdir_req_in         =>  inXDir_req_TB,
+            tx_internal_xdir_ack_out        =>  inXDir_ack_TB,
+            tx_internal_xdir_dat_in         =>  data_Xdir_TB,
+            -- to internal local
+            tx_internal_local_req_in        =>  inLocal_req_TB,
+            tx_internal_local_ack_out       =>  inLocal_ack_TB,
+            tx_internal_local_dat_in        =>  data_Local_TB
         );
 
     END STRUCTURE;

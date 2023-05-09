@@ -67,7 +67,7 @@ BEGIN
         inA_req_TB <= '0';
         sel_req <= '0';
         
-        WAIT FOR 50 ns;
+        WAIT UNTIL inI_ack_TB = '0';
 
         inA_req_TB <= '1';
         selector_TB <= "01000000";
@@ -79,7 +79,7 @@ BEGIN
         inA_req_TB <= '0';
         sel_req <= '0';
 
-        WAIT FOR 50 ns;
+        WAIT UNTIL inH_ack_TB = '0';
 
         inA_req_TB <= '1';
         selector_TB <= "00100000";
@@ -91,7 +91,7 @@ BEGIN
         inA_req_TB <= '0';
         sel_req <= '0';
 
-        WAIT FOR 50 ns;
+        WAIT UNTIL inG_ack_TB = '0';
 
         inA_req_TB <= '1';
         selector_TB <= "00010000";
@@ -103,7 +103,7 @@ BEGIN
         inA_req_TB <= '0';
         sel_req <= '0';
 
-        WAIT FOR 50 ns;
+        WAIT UNTIL inF_ack_TB = '0';
 
         inA_req_TB <= '1';
         selector_TB <= "00001000";
@@ -115,7 +115,7 @@ BEGIN
         inA_req_TB <= '0';
         sel_req <= '0';
 
-        WAIT FOR 50 ns;
+        WAIT UNTIL inE_ack_TB = '0';
 
         inA_req_TB <= '1';
         selector_TB <= "00000100";
@@ -127,7 +127,7 @@ BEGIN
         inA_req_TB <= '0';
         sel_req <= '0';
 
-        WAIT FOR 50 ns;
+        WAIT UNTIL inD_ack_TB = '0';
 
         inA_req_TB <= '1';
         selector_TB <= "00000010";
@@ -139,7 +139,7 @@ BEGIN
         inA_req_TB <= '0';
         sel_req <= '0';
 
-        WAIT FOR 50 ns;
+        WAIT UNTIL inC_ack_TB = '0';
 
         inA_req_TB <= '1';
         selector_TB <= "00000001";
@@ -151,7 +151,7 @@ BEGIN
         inA_req_TB <= '0';
         sel_req <= '0';
 
-        WAIT FOR 50 ns;
+        WAIT UNTIL inB_ack_TB = '0';
         ASSERT 0 = 1 REPORT "Bye" SEVERITY failure;
     END PROCESS;
 
