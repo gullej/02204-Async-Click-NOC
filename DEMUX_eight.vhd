@@ -19,7 +19,9 @@ ENTITY DEMUX_eight IS
         PHASE_INIT_I : STD_LOGIC := '0'
     );
     PORT (
+        -- Control
         rst : IN STD_LOGIC;
+        
         -- Input port
         rx_req_in_A  : IN  STD_LOGIC;
         rx_data_in_A : IN  STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
@@ -30,42 +32,42 @@ ENTITY DEMUX_eight IS
         ctrl_data_in_sel : IN  STD_LOGIC_VECTOR(7 DOWNTO 0);
         ctrl_ack_out_sel : OUT STD_LOGIC;
 
-        -- Output channel 1
+        -- Output channel 1, chosen by ctrl_data_in_sel(0)
         tx_req_out_B  : OUT STD_LOGIC;
         tx_data_out_B : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
         tx_ack_in_B   : IN  STD_LOGIC;
 
-        -- Output channel 2
+        -- Output channel 2, chosen by ctrl_data_in_sel(1)
         tx_req_out_C  : OUT STD_LOGIC;
         tx_data_out_C : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
         tx_ack_in_C   : IN  STD_LOGIC;
 
-        -- Output channel 3
+        -- Output channel 3, chosen by ctrl_data_in_sel(2)
         tx_req_out_D  : OUT STD_LOGIC;
         tx_data_out_D : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
         tx_ack_in_D   : IN  STD_LOGIC;
 
-        -- Output channel 4
+        -- Output channel 4, chosen by ctrl_data_in_sel(3)
         tx_req_out_E  : OUT STD_LOGIC;
         tx_data_out_E : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
         tx_ack_in_E   : IN  STD_LOGIC;
 
-        -- Output channel 5
+        -- Output channel 5, chosen by ctrl_data_in_sel(4)
         tx_req_out_F  : OUT STD_LOGIC;
         tx_data_out_F : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
         tx_ack_in_F   : IN  STD_LOGIC;
 
-        -- Output channel 6
+        -- Output channel 6, chosen by ctrl_data_in_sel(5)
         tx_req_out_G  : OUT STD_LOGIC;
         tx_data_out_G : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
         tx_ack_in_G   : IN  STD_LOGIC;
 
-        -- Output channel 7
+        -- Output channel 7, chosen by ctrl_data_in_sel(6)
         tx_req_out_H  : OUT STD_LOGIC;
         tx_data_out_H : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
         tx_ack_in_H   : IN  STD_LOGIC;
         
-        -- Output channel 8
+        -- Output channel 8, chosen by ctrl_data_in_sel(7)
         tx_req_out_I  : OUT STD_LOGIC;
         tx_data_out_I : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
         tx_ack_in_I   : IN  STD_LOGIC

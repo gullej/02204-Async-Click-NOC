@@ -42,14 +42,17 @@ ENTITY asyncoc_io_port_local IS
         rx_internal_d_dat_in  : IN STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);   
         rx_internal_d_ack_out : OUT STD_LOGIC;
 
+        -- from internal e
         rx_internal_e_req_in  : IN STD_LOGIC;
         rx_internal_e_dat_in  : IN STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);   
         rx_internal_e_ack_out : OUT STD_LOGIC;
 
+        -- from internal f
         rx_internal_f_req_in  : IN STD_LOGIC;
         rx_internal_f_dat_in  : IN STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);   
         rx_internal_f_ack_out : OUT STD_LOGIC;
 
+        -- from internal g
         rx_internal_g_req_in  : IN STD_LOGIC;
         rx_internal_g_dat_in  : IN STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);   
         rx_internal_g_ack_out : OUT STD_LOGIC;
@@ -156,29 +159,29 @@ mux_sel_req  <=  fork_outC_req after XOR_DELAY + OR2_DELAY*ADDR_WIDTH + AND2_DEL
 x_dest  <=  fork_outC_data(DATA_WIDTH-1 DOWNTO DATA_WIDTH-ADDR_WIDTH);
 y_dest  <=  fork_outC_data(DATA_WIDTH-ADDR_WIDTH-1 DOWNTO DATA_WIDTH-ADDR_WIDTH*2);
 
-mux_sel_data(7) <=  '1' when ((x_dest = ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y)) else '0';
-mux_sel_data(6) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y)) else '0';
-mux_sel_data(5) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y)) else '0';
-mux_sel_data(4) <=  '1' when ((x_dest = ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y)) else '0';
-mux_sel_data(3) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y)) else '0';
-mux_sel_data(2) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y)) else '0';
-mux_sel_data(1) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest = ROUTER_LOCATION_Y)) else '0';
-mux_sel_data(0) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest = ROUTER_LOCATION_Y)) else '0';
+mux_sel_data(7) <=  '1' when ((x_dest = ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y)) else '0'; -- will go 
+mux_sel_data(6) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y)) else '0'; -- will go 
+mux_sel_data(5) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y)) else '0'; -- will go 
+mux_sel_data(4) <=  '1' when ((x_dest = ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y)) else '0'; -- will go 
+mux_sel_data(3) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y)) else '0'; -- will go 
+mux_sel_data(2) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y)) else '0'; -- will go 
+mux_sel_data(1) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest = ROUTER_LOCATION_Y)) else '0'; -- will go 
+mux_sel_data(0) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest = ROUTER_LOCATION_Y)) else '0'; -- will go 
 
 fork_outC_ack  <=  mux_sel_ack;
 
 fork_in : entity work.reg_fork
 Port map (
   rst         =>  reset,
-  --Input chan
+  --Input channnel
   inA_req     =>  rx_external_req_in ,
   inA_data    =>  rx_external_dat_in,
   inA_ack     =>  rx_external_ack_out,
-  --Output cha
+  --Output channel
   outB_req    =>  fork_outB_req ,
   outB_data   =>  fork_outB_data,
   outB_ack    =>  fork_outB_ack ,
-  --Output cha
+  --Output channel
   outC_req    =>  fork_outC_req ,
   outC_data   =>  fork_outC_data,
   outC_ack    =>  fork_outC_ack 
@@ -186,6 +189,7 @@ Port map (
 
 demux8_in : entity work.DEMUX_eight
 PORT MAP(
+    -- Control
     rst               =>  reset,
     -- Input port
     rx_req_in_A       => fork_outB_req ,
@@ -195,43 +199,51 @@ PORT MAP(
     ctrl_req_in_sel   =>  mux_sel_req ,
     ctrl_data_in_sel  =>  mux_sel_data,
     ctrl_ack_out_sel  =>  mux_sel_ack ,
-    -- Output chan
+    -- Output channel 1, chosen by ctrl_data_in_sel(0)
     tx_req_out_B      =>  tx_internal_0_req_in ,
     tx_data_out_B     =>  tx_internal_0_dat_in ,
     tx_ack_in_B       =>  tx_internal_0_ack_out,
-    -- Output chan
+    -- Output channel 2, chosen by ctrl_data_in_sel(1)
     tx_req_out_C      =>  tx_internal_1_req_in ,
     tx_data_out_C     =>  tx_internal_1_dat_in ,
     tx_ack_in_C       =>  tx_internal_1_ack_out,
-    -- Output chan
+    -- Output channel 3, chosen by ctrl_data_in_sel(2)
     tx_req_out_D      =>  tx_internal_2_req_in ,
     tx_data_out_D     =>  tx_internal_2_dat_in ,
     tx_ack_in_D       =>  tx_internal_2_ack_out,
-    -- Output chan
+    -- Output channel 4, chosen by ctrl_data_in_sel(3)
     tx_req_out_E      =>  tx_internal_3_req_in ,
     tx_data_out_E     =>  tx_internal_3_dat_in ,
     tx_ack_in_E       =>  tx_internal_3_ack_out,
-    -- Output chan
+    -- Output channel 5, chosen by ctrl_data_in_sel(4)
     tx_req_out_F      =>  tx_internal_4_req_in ,
     tx_data_out_F     =>  tx_internal_4_dat_in ,
     tx_ack_in_F       =>  tx_internal_4_ack_out,
-    -- Output chan
+    -- Output channel 6, chosen by ctrl_data_in_sel(5)
     tx_req_out_G      =>  tx_internal_5_req_in ,
     tx_data_out_G     =>  tx_internal_5_dat_in ,
     tx_ack_in_G       =>  tx_internal_5_ack_out,
-    -- Output chan
+    -- Output channel 7, chosen by ctrl_data_in_sel(6)
     tx_req_out_H      =>  tx_internal_6_req_in ,
     tx_data_out_H     =>  tx_internal_6_dat_in ,
     tx_ack_in_H       =>  tx_internal_6_ack_out,
-    -- Output chan
+    -- Output channel 8, chosen by ctrl_data_in_sel(7)
     tx_req_out_I      =>  tx_internal_7_req_in ,
     tx_data_out_I     =>  tx_internal_7_dat_in ,
     tx_ack_in_I       =>  tx_internal_7_ack_out
 );
 
+------
+--
+--    a  -  ar
+--          bit  -  c
+--    b  -  er
+--
+-------
 
 arbiter_a : entity work.arbiter
 PORT MAP(
+    -- Control
     rst           => reset,
     -- Input channel from local
     inA_req       => rx_local_req_in,
@@ -249,6 +261,7 @@ PORT MAP(
 
 arbiter_b : entity work.arbiter
 PORT MAP(
+    -- Control
     rst           => reset,
     -- Input channel from internal b
     inA_req       => rx_internal_b_req_in,
@@ -266,6 +279,7 @@ PORT MAP(
 
 arbiter_c : entity work.arbiter
 PORT MAP(
+    -- Control
     rst           => reset,
     -- Input channel from arbiter a
     inA_req       => arbiter_a_req_in,
@@ -281,7 +295,13 @@ PORT MAP(
     outC_ack      => arbiter_c_ack_out
 );
 
---4:1 arbiter
+------
+--
+--    d  -  ar
+--          bit  -  f
+--    e  -  er
+--
+-------
 
 arbiter_d : entity work.arbiter
 PORT MAP(
@@ -334,7 +354,13 @@ PORT MAP(
     outC_ack      => arbiter_f_ack_out
 );
 
---out
+------
+--
+--    c  -  ar
+--          bit  -  g
+--    f  -  er
+--
+-------
 
 arbiter_g : entity work.arbiter
 PORT MAP(
