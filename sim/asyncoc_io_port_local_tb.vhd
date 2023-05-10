@@ -113,11 +113,11 @@ BEGIN
         inA_req_TB <= '1';
         data_in_TB <= "0000" & x"123"; -- down down, should go 
 
-        WAIT UNTIL inH_ack_TB = '1';
+        WAIT UNTIL inD_ack_TB = '1';
 
         inA_req_TB <= '0';
         
-        WAIT UNTIL inH_ack_TB = '0';
+        WAIT UNTIL inD_ack_TB = '0';
 
         inA_req_TB <= '1';
         data_in_TB <= "0001" & x"567"; -- down equal, should go 
@@ -235,38 +235,45 @@ BEGIN
         tx_external_req_in       =>  arbiter_outA_req_TB ,
         tx_external_ack_out      =>  arbiter_outA_ack_TB ,
         tx_external_dat_in       =>  arbiter_outA_data_TB,
-        -- to internal 0
-        tx_internal_0_req_in     =>  inB_req_TB,
-        tx_internal_0_ack_out    =>  inB_ack_TB,
-        tx_internal_0_dat_in     =>  data_b_TB,
-        -- to internal 1
-        tx_internal_1_req_in     =>  inC_req_TB,
-        tx_internal_1_ack_out    =>  inC_ack_TB,
-        tx_internal_1_dat_in     =>  data_c_TB,
-        -- to internal 2
-        tx_internal_2_req_in     =>  inD_req_TB,
-        tx_internal_2_ack_out    =>  inD_ack_TB,
-        tx_internal_2_dat_in     =>  data_d_TB,
-        -- to internal 3
-        tx_internal_3_req_in     =>  inE_req_TB,
-        tx_internal_3_ack_out    =>  inE_ack_TB,
-        tx_internal_3_dat_in     =>  data_e_TB,
-        -- to internal 4
-        tx_internal_4_req_in     =>  inF_req_TB,
-        tx_internal_4_ack_out    =>  inF_ack_TB,
-        tx_internal_4_dat_in     =>  data_f_TB,
-        -- to internal 5
-        tx_internal_5_req_in     =>  inG_req_TB,
-        tx_internal_5_ack_out    =>  inG_ack_TB,
-        tx_internal_5_dat_in     =>  data_g_TB,
-        -- to internal 6
-        tx_internal_6_req_in     =>  inH_req_TB,
-        tx_internal_6_ack_out    =>  inH_ack_TB,
-        tx_internal_6_dat_in     =>  data_h_TB,
-        -- to internal 7
-        tx_internal_7_req_in     =>  inI_req_TB,
-        tx_internal_7_ack_out    =>  inI_ack_TB,
-        tx_internal_7_dat_in     =>  data_i_TB
+        -- to internal north west
+        tx_internal_north_west_req_in    =>  inB_req_TB,
+        tx_internal_north_west_dat_in    =>  data_b_TB,
+        tx_internal_north_west_ack_out    =>  inB_ack_TB,
+
+        -- to internal west  
+        tx_internal_west_req_in          =>  inC_req_TB,
+        tx_internal_west_dat_in          =>  data_c_TB,
+        tx_internal_west_ack_out         =>  inC_ack_TB,
+
+        -- to internal south west
+        tx_internal_south_west_req_in    =>  inD_req_TB,
+        tx_internal_south_west_dat_in    =>  data_d_TB,
+        tx_internal_south_west_ack_out   =>  inD_ack_TB,
+
+        -- to internal south
+        tx_internal_south_req_in         =>  inE_req_TB,
+        tx_internal_south_dat_in         =>  data_e_TB,
+        tx_internal_south_ack_out        =>  inE_ack_TB,
+
+        -- to internal south east
+        tx_internal_south_east_req_in    =>  inF_req_TB,
+        tx_internal_south_east_dat_in    =>  data_f_TB,
+        tx_internal_south_east_ack_out   =>  inF_ack_TB,
+
+        -- to internal east
+        tx_internal_east_req_in          =>  inG_req_TB,
+        tx_internal_east_dat_in          =>  data_g_TB,
+        tx_internal_east_ack_out         =>  inG_ack_TB,
+
+        -- to internal north east 
+        tx_internal_north_east_req_in    =>  inH_req_TB,
+        tx_internal_north_east_dat_in    =>  data_h_TB,
+        tx_internal_north_east_ack_out   =>  inH_ack_TB,
+
+        -- to internal north
+        tx_internal_north_req_in         =>  inI_req_TB,
+        tx_internal_north_dat_in         =>  data_i_TB,
+        tx_internal_north_ack_out        =>  inI_ack_TB
     );
 
     END STRUCTURE;

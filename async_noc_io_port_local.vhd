@@ -64,48 +64,48 @@ ENTITY asyncoc_io_port_local IS
 
         -- to external
         tx_external_req_in  : OUT STD_LOGIC;
-        tx_external_ack_out : IN  STD_LOGIC;
         tx_external_dat_in  : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        tx_external_ack_out : IN  STD_LOGIC;
 
-        -- to internal 0
-        tx_internal_0_req_in  : OUT STD_LOGIC;
-        tx_internal_0_ack_out : IN  STD_LOGIC;
-        tx_internal_0_dat_in  : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        -- to internal north west
+        tx_internal_north_west_req_in    : OUT STD_LOGIC;
+        tx_internal_north_west_dat_in    : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        tx_internal_north_west_ack_out   : IN  STD_LOGIC;
+  
+        -- to internal west  
+        tx_internal_west_req_in         : OUT STD_LOGIC;
+        tx_internal_west_dat_in         : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        tx_internal_west_ack_out        : IN  STD_LOGIC;
 
-        -- to internal 1
-        tx_internal_1_req_in  : OUT STD_LOGIC;
-        tx_internal_1_ack_out : IN  STD_LOGIC;
-        tx_internal_1_dat_in  : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        -- to internal south west
+        tx_internal_south_west_req_in   : OUT STD_LOGIC;
+        tx_internal_south_west_dat_in   : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        tx_internal_south_west_ack_out  : IN  STD_LOGIC;
 
-        -- to internal 2
-        tx_internal_2_req_in  : OUT STD_LOGIC;
-        tx_internal_2_ack_out : IN  STD_LOGIC;
-        tx_internal_2_dat_in  : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        -- to internal south
+        tx_internal_south_req_in        : OUT STD_LOGIC;
+        tx_internal_south_dat_in        : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        tx_internal_south_ack_out       : IN  STD_LOGIC;
 
-        -- to internal 3
-        tx_internal_3_req_in  : OUT STD_LOGIC;
-        tx_internal_3_ack_out : IN  STD_LOGIC;
-        tx_internal_3_dat_in  : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        -- to internal south east
+        tx_internal_south_east_req_in   : OUT STD_LOGIC;
+        tx_internal_south_east_dat_in   : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        tx_internal_south_east_ack_out  : IN  STD_LOGIC;
 
-        -- to internal 4
-        tx_internal_4_req_in  : OUT STD_LOGIC;
-        tx_internal_4_ack_out : IN  STD_LOGIC;
-        tx_internal_4_dat_in  : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        -- to internal east
+        tx_internal_east_req_in         : OUT STD_LOGIC;
+        tx_internal_east_dat_in         : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        tx_internal_east_ack_out        : IN  STD_LOGIC;
 
-        -- to internal 5
-        tx_internal_5_req_in  : OUT STD_LOGIC;
-        tx_internal_5_ack_out : IN  STD_LOGIC;
-        tx_internal_5_dat_in  : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        -- to internal north east 
+        tx_internal_north_east_req_in   : OUT STD_LOGIC;
+        tx_internal_north_east_dat_in   : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        tx_internal_north_east_ack_out  : IN  STD_LOGIC;
 
-        -- to internal 6
-        tx_internal_6_req_in  : OUT STD_LOGIC;
-        tx_internal_6_ack_out : IN  STD_LOGIC;
-        tx_internal_6_dat_in  : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
-
-        -- to internal 7
-        tx_internal_7_req_in  : OUT STD_LOGIC;
-        tx_internal_7_ack_out : IN  STD_LOGIC;
-        tx_internal_7_dat_in  : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0)
+        -- to internal north
+        tx_internal_north_req_in        : OUT STD_LOGIC;
+        tx_internal_north_dat_in        : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        tx_internal_north_ack_out       : IN  STD_LOGIC
     );
 END asyncoc_io_port_local;
 
@@ -135,7 +135,6 @@ ARCHITECTURE asyncoc_io_port_straight_arc OF asyncoc_io_port_local IS
     SIGNAL arbiter_f_dat_in : STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
     SIGNAL arbiter_f_ack_out : STD_LOGIC;
 
-
     SIGNAL fork_outB_req   :  STD_LOGIC;
     SIGNAL fork_outB_data  :  STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
     SIGNAL fork_outB_ack   :  STD_LOGIC;
@@ -143,7 +142,6 @@ ARCHITECTURE asyncoc_io_port_straight_arc OF asyncoc_io_port_local IS
     SIGNAL fork_outC_req   :  STD_LOGIC;
     SIGNAL fork_outC_data  :  STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
     SIGNAL fork_outC_ack   :  STD_LOGIC;
-
 
     SIGNAL mux_sel_req   :  STD_LOGIC;
     SIGNAL mux_sel_data  :  STD_LOGIC_VECTOR(7 DOWNTO 0);
@@ -159,15 +157,15 @@ mux_sel_req  <=  fork_outC_req after XOR_DELAY + OR2_DELAY*ADDR_WIDTH + AND2_DEL
 x_dest  <=  fork_outC_data(DATA_WIDTH-1 DOWNTO DATA_WIDTH-ADDR_WIDTH);
 y_dest  <=  fork_outC_data(DATA_WIDTH-ADDR_WIDTH-1 DOWNTO DATA_WIDTH-ADDR_WIDTH*2);
 
-mux_sel_data(7) <=  '1' when ((x_dest = ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y)) else '0'; -- will go 
-mux_sel_data(6) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y)) else '0'; -- will go 
-mux_sel_data(5) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y)) else '0'; -- will go 
-mux_sel_data(4) <=  '1' when ((x_dest = ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y)) else '0'; -- will go 
-mux_sel_data(3) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y)) else '0'; -- will go 
-mux_sel_data(2) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y)) else '0'; -- will go 
-mux_sel_data(1) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest = ROUTER_LOCATION_Y)) else '0'; -- will go 
-mux_sel_data(0) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest = ROUTER_LOCATION_Y)) else '0'; -- will go 
-
+mux_sel_data(7) <=  '1' when ((x_dest = ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y)) else '0'; -- will go north
+mux_sel_data(6) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y)) else '0'; -- will go north east
+mux_sel_data(5) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest = ROUTER_LOCATION_Y)) else '0'; -- will go east
+mux_sel_data(4) <=  '1' when ((x_dest > ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y)) else '0'; -- will go south east
+mux_sel_data(3) <=  '1' when ((x_dest = ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y)) else '0'; -- will go south
+mux_sel_data(2) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest < ROUTER_LOCATION_Y)) else '0'; -- will go south west
+mux_sel_data(1) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest = ROUTER_LOCATION_Y)) else '0'; -- will go west
+mux_sel_data(0) <=  '1' when ((x_dest < ROUTER_LOCATION_X) and (y_dest > ROUTER_LOCATION_Y)) else '0'; -- will go nort west
+                        
 fork_outC_ack  <=  mux_sel_ack;
 
 fork_in : entity work.reg_fork
@@ -199,38 +197,49 @@ PORT MAP(
     ctrl_req_in_sel   =>  mux_sel_req ,
     ctrl_data_in_sel  =>  mux_sel_data,
     ctrl_ack_out_sel  =>  mux_sel_ack ,
+
+    -- will go north           mux_sel_data(7)
+-- will go north east       mux_sel_data(6)
+-- will go east       mux_sel_data(5)
+-- will go south east       mux_sel_data(4)
+-- will go south       mux_sel_data(3)
+-- will go south west       mux_sel_data(2)
+-- will go west       mux_sel_data(1)
+-- will go nort west       mux_sel_data(0)
+
+
     -- Output channel 1, chosen by ctrl_data_in_sel(0)
-    tx_req_out_B      =>  tx_internal_0_req_in ,
-    tx_data_out_B     =>  tx_internal_0_dat_in ,
-    tx_ack_in_B       =>  tx_internal_0_ack_out,
+    tx_req_out_B      =>  tx_internal_north_west_req_in ,
+    tx_data_out_B     =>  tx_internal_north_west_dat_in ,
+    tx_ack_in_B       =>  tx_internal_north_west_ack_out,
     -- Output channel 2, chosen by ctrl_data_in_sel(1)
-    tx_req_out_C      =>  tx_internal_1_req_in ,
-    tx_data_out_C     =>  tx_internal_1_dat_in ,
-    tx_ack_in_C       =>  tx_internal_1_ack_out,
+    tx_req_out_C      =>  tx_internal_west_req_in ,
+    tx_data_out_C     =>  tx_internal_west_dat_in ,
+    tx_ack_in_C       =>  tx_internal_west_ack_out,
     -- Output channel 3, chosen by ctrl_data_in_sel(2)
-    tx_req_out_D      =>  tx_internal_2_req_in ,
-    tx_data_out_D     =>  tx_internal_2_dat_in ,
-    tx_ack_in_D       =>  tx_internal_2_ack_out,
+    tx_req_out_D      =>  tx_internal_south_west_req_in ,
+    tx_data_out_D     =>  tx_internal_south_west_dat_in ,
+    tx_ack_in_D       =>  tx_internal_south_west_ack_out,
     -- Output channel 4, chosen by ctrl_data_in_sel(3)
-    tx_req_out_E      =>  tx_internal_3_req_in ,
-    tx_data_out_E     =>  tx_internal_3_dat_in ,
-    tx_ack_in_E       =>  tx_internal_3_ack_out,
+    tx_req_out_E      =>  tx_internal_south_req_in ,
+    tx_data_out_E     =>  tx_internal_south_dat_in ,
+    tx_ack_in_E       =>  tx_internal_south_ack_out,
     -- Output channel 5, chosen by ctrl_data_in_sel(4)
-    tx_req_out_F      =>  tx_internal_4_req_in ,
-    tx_data_out_F     =>  tx_internal_4_dat_in ,
-    tx_ack_in_F       =>  tx_internal_4_ack_out,
+    tx_req_out_F      =>  tx_internal_south_east_req_in ,
+    tx_data_out_F     =>  tx_internal_south_east_dat_in ,
+    tx_ack_in_F       =>  tx_internal_south_east_ack_out,
     -- Output channel 6, chosen by ctrl_data_in_sel(5)
-    tx_req_out_G      =>  tx_internal_5_req_in ,
-    tx_data_out_G     =>  tx_internal_5_dat_in ,
-    tx_ack_in_G       =>  tx_internal_5_ack_out,
+    tx_req_out_G      =>  tx_internal_east_req_in ,
+    tx_data_out_G     =>  tx_internal_east_dat_in ,
+    tx_ack_in_G       =>  tx_internal_east_ack_out,
     -- Output channel 7, chosen by ctrl_data_in_sel(6)
-    tx_req_out_H      =>  tx_internal_6_req_in ,
-    tx_data_out_H     =>  tx_internal_6_dat_in ,
-    tx_ack_in_H       =>  tx_internal_6_ack_out,
+    tx_req_out_H      =>  tx_internal_north_east_req_in ,
+    tx_data_out_H     =>  tx_internal_north_east_dat_in ,
+    tx_ack_in_H       =>  tx_internal_north_east_ack_out,
     -- Output channel 8, chosen by ctrl_data_in_sel(7)
-    tx_req_out_I      =>  tx_internal_7_req_in ,
-    tx_data_out_I     =>  tx_internal_7_dat_in ,
-    tx_ack_in_I       =>  tx_internal_7_ack_out
+    tx_req_out_I      =>  tx_internal_north_req_in ,
+    tx_data_out_I     =>  tx_internal_north_dat_in ,
+    tx_ack_in_I       =>  tx_internal_north_ack_out
 );
 
 ------
@@ -241,7 +250,7 @@ PORT MAP(
 --
 -------
 
-arbiter_a : entity work.arbiter
+arbiter_leaf_a : entity work.arbiter
 PORT MAP(
     -- Control
     rst           => reset,
@@ -259,7 +268,7 @@ PORT MAP(
     outC_ack      => arbiter_a_ack_out
 );
 
-arbiter_b : entity work.arbiter
+arbiter_leaf_b : entity work.arbiter
 PORT MAP(
     -- Control
     rst           => reset,
@@ -277,7 +286,7 @@ PORT MAP(
     outC_ack      => arbiter_b_ack_out
 );
 
-arbiter_c : entity work.arbiter
+arbiter_branch_c : entity work.arbiter
 PORT MAP(
     -- Control
     rst           => reset,
@@ -303,7 +312,7 @@ PORT MAP(
 --
 -------
 
-arbiter_d : entity work.arbiter
+arbiter_leaf_d : entity work.arbiter
 PORT MAP(
     rst           => reset,
     -- Input channel from local
@@ -320,7 +329,7 @@ PORT MAP(
     outC_ack      => arbiter_d_ack_out
 );
 
-arbiter_e : entity work.arbiter
+arbiter_leaf_e : entity work.arbiter
 PORT MAP(
     rst           => reset,
     -- Input channel from internal b
@@ -337,7 +346,7 @@ PORT MAP(
     outC_ack      => arbiter_e_ack_out
 );
 
-arbiter_f : entity work.arbiter
+arbiter_branch_f : entity work.arbiter
 PORT MAP(
     rst           => reset,
     -- Input channel from arbiter a
@@ -362,7 +371,7 @@ PORT MAP(
 --
 -------
 
-arbiter_g : entity work.arbiter
+arbiter_trunk_g : entity work.arbiter
 PORT MAP(
     rst           => reset,
     -- Input channel from arbiter a
