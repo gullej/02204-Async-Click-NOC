@@ -38,12 +38,12 @@ architecture Behavioral of arbiter is
 begin
 
     -- MUTEX  
-    mid1 <= inA_req nand mid2 after AND2_DELAY + NOT1_DELAY;
+    mid1 <= inA_req nand mid2 after AND2_DELAY + NOT1_DELAY + XOR_DELAY + REG_CQ_DELAY;
     -- set the second one slightly out of phase with the first,
     -- this will resolve "metastability" that cannot be simulated
-    mid2 <= inB_req nand mid1 after AND2_DELAY + NOT1_DELAY + 1 ns; 
-    grant1 <= (not mid1) and mid2 after AND2_DELAY + NOT1_DELAY;
-    grant2 <= (not mid2) and mid1 after AND2_DELAY + NOT1_DELAY;
+    mid2 <= inB_req nand mid1 after AND2_DELAY + NOT1_DELAY  + XOR_DELAY + REG_CQ_DELAY + 1 ns; 
+    grant1 <= (not mid1) and mid2 after AND2_DELAY + NOT1_DELAY + XOR_DELAY + REG_CQ_DELAY;
+    grant2 <= (not mid2) and mid1 after AND2_DELAY + NOT1_DELAY + XOR_DELAY + REG_CQ_DELAY;
 
     -- MERGE
     merge : ENTITY work.merge 

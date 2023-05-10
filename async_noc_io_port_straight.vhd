@@ -6,7 +6,7 @@ USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.numeric_std.ALL;
 USE work.defs.ALL;
 
-ENTITY asyncoc_io_port_straight IS
+ENTITY async_noc_io_port_straight IS
     GENERIC (
         LOCATION_X            :  integer;
         LOCATION_Y            :  integer;
@@ -46,19 +46,19 @@ ENTITY asyncoc_io_port_straight IS
         tx_external_ack_out    : IN  STD_LOGIC;
         tx_external_dat_in     : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
 
-        -- to local
-        tx_local_req_in       : OUT STD_LOGIC;
-        tx_local_ack_out      : IN  STD_LOGIC;
-        tx_local_dat_in       : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        -- to internal local
+        tx_internal_local_req_in       : OUT STD_LOGIC;
+        tx_internal_local_ack_out      : IN  STD_LOGIC;
+        tx_internal_local_dat_in       : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
 
         -- to internal straight
-        tx_internal_0_req_in  : OUT STD_LOGIC;
-        tx_internal_0_ack_out : IN  STD_LOGIC;
-        tx_internal_0_dat_in  : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0)
+        tx_internal_across_req_in  : OUT STD_LOGIC;
+        tx_internal_across_ack_out : IN  STD_LOGIC;
+        tx_internal_across_dat_in  : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0)
     );
-END asyncoc_io_port_straight;
+END async_noc_io_port_straight;
 
-ARCHITECTURE asyncoc_io_port_straight_arc OF asyncoc_io_port_straight IS
+ARCHITECTURE asyncoc_io_port_straight_arc OF async_noc_io_port_straight IS
 
     CONSTANT ROUTER_LOCATION_X  :  STD_LOGIC_VECTOR(ADDR_WIDTH-1 DOWNTO 0) := STD_LOGIC_VECTOR(to_unsigned(LOCATION_X,ADDR_WIDTH));
     CONSTANT ROUTER_LOCATION_Y  :  STD_LOGIC_VECTOR(ADDR_WIDTH-1 DOWNTO 0) := STD_LOGIC_VECTOR(to_unsigned(LOCATION_y,ADDR_WIDTH)); 
@@ -184,13 +184,13 @@ PORT MAP(
     inSel_ack   => mux_sel_ack,
     selector    => mux_sel_data(0),
     -- Output chan
-    outB_req  =>  tx_local_req_in,   
-    outB_data =>  tx_local_dat_in,   
-    outB_ack  =>  tx_local_ack_out,   
+    outB_req  =>  tx_internal_local_req_in,   
+    outB_data =>  tx_internal_local_dat_in,   
+    outB_ack  =>  tx_internal_local_ack_out,   
     -- Output chan
-    outC_req   => tx_internal_0_req_in,  
-    outC_data  => tx_internal_0_dat_in,  
-    outC_ack   => tx_internal_0_ack_out    
+    outC_req   => tx_internal_across_req_in,  
+    outC_data  => tx_internal_across_dat_in,  
+    outC_ack   => tx_internal_across_ack_out    
 );
 
 END asyncoc_io_port_straight_arc;
