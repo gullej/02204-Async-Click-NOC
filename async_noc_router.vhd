@@ -98,4 +98,133 @@ ARCHITECTURE async_noc_router_arc OF async_noc_router IS
 
 BEGIN
 
+ STRAIGHT_PORT : entity work.
+ GENERIC (
+    LOCATION_X                    =>  1,
+    LOCATION_Y                    =>  1,
+    ADDR_WIDTH                    =>  2,
+  );
+  PORT (
+      -- control
+      reset                        =>  reset, 
+      -- from local
+      rx_local_req_in              =>  , 
+      rx_local_ack_out             =>  , 
+      rx_local_dat_in              =>  , 
+      -- from internal a
+      rx_internal_a_req_in         =>  , 
+      rx_internal_a_ack_out        =>  , 
+      rx_internal_a_dat_in         =>  , 
+      -- from internal b
+      rx_internal_b_req_in         =>  , 
+      rx_internal_b_ack_out        =>  , 
+      rx_internal_b_dat_in         =>  , 
+      -- from internal c
+      rx_internal_c_req_in         =>  , 
+      rx_internal_c_ack_out        =>  , 
+      rx_internal_c_dat_in         =>  , 
+      
+      -- from external
+      rx_external_req_in           =>  , 
+      rx_external_ack_out          =>  , 
+      rx_external_dat_in           =>  , 
+      -- to external
+      tx_external_req_in           =>  , 
+      tx_external_ack_out          =>  , 
+      tx_external_dat_in           =>  , 
+      -- to internal local
+      tx_internal_local_req_in     =>  , 
+      tx_internal_local_ack_out    =>  , 
+      tx_internal_local_dat_in     =>  , 
+      -- to internal straight
+      tx_internal_across_req_in    =>  , 
+      tx_internal_across_ack_out   =>  , 
+      tx_internal_across_dat_in    =>  , 
+  );
+
+ LOCAL_PORT : entity work.asyncoc_io_port_local
+   GENERIC MAP (
+      LOCATION_X                      =>  1,
+      LOCATION_Y                      =>  1,
+      ADDR_WIDTH                      =>  2,
+  );
+  PORT MAP (
+      -- control
+      reset                           =>  ,
+      start                           =>  ,
+      -- from local i.e H
+      rx_local_req_in                 =>  ,
+      rx_local_ack_out                =>  ,
+      rx_local_dat_in                 =>  ,
+      -- from internal a
+      rx_internal_a_req_in            =>  ,
+      rx_internal_a_ack_out           =>  ,
+      rx_internal_a_dat_in            =>  ,
+      -- from internal b
+      rx_internal_b_req_in            =>  ,
+      rx_internal_b_ack_out           =>  ,
+      rx_internal_b_dat_in            =>  ,
+      -- from internal c
+      rx_internal_c_req_in            =>  ,
+      rx_internal_c_dat_in            =>  ,
+      rx_internal_c_ack_out           =>  ,
+      -- from internal d
+      rx_internal_d_req_in            =>  ,
+      rx_internal_d_dat_in            =>  ,
+      rx_internal_d_ack_out           =>  ,
+      -- from internal e
+      rx_internal_e_req_in            =>  ,
+      rx_internal_e_dat_in            =>  ,
+      rx_internal_e_ack_out           =>  ,
+      -- from internal f
+      rx_internal_f_req_in            =>  ,
+      rx_internal_f_dat_in            =>  ,
+      rx_internal_f_ack_out           =>  ,
+      -- from internal g
+      rx_internal_g_req_in            =>  ,
+      rx_internal_g_dat_in            =>  ,
+      rx_internal_g_ack_out           =>  ,
+      
+      -- from external
+      rx_external_req_in              =>  tx_req_in_dem_L,
+      rx_external_ack_out             =>  tx_ack_out_dem_L,
+      rx_external_dat_in              =>  tx_dat_in_L,
+      -- to external
+      tx_external_req_in              =>  rx_ack_in_arb_L,
+      tx_external_dat_in              =>  rx_req_out_arb_L,
+      tx_external_ack_out             =>  rx_dat_out_L,
+      -- to internal north west
+      tx_internal_north_west_req_in   =>  ,
+      tx_internal_north_west_dat_in   =>  ,
+      tx_internal_north_west_ack_out  =>  ,
+      -- to internal west  
+      tx_internal_west_req_in         =>  ,
+      tx_internal_west_dat_in         =>  ,
+      tx_internal_west_ack_out        =>  ,
+      -- to internal south west
+      tx_internal_south_west_req_in   =>  ,
+      tx_internal_south_west_dat_in   =>  ,
+      tx_internal_south_west_ack_out  =>  ,
+      -- to internal south
+      tx_internal_south_req_in        =>  ,
+      tx_internal_south_dat_in        =>  ,
+      tx_internal_south_ack_out       =>  ,
+      -- to internal south east
+      tx_internal_south_east_req_in   =>  ,
+      tx_internal_south_east_dat_in   =>  ,
+      tx_internal_south_east_ack_out  =>  ,
+      -- to internal east
+      tx_internal_east_req_in         =>  ,
+      tx_internal_east_dat_in         =>  ,
+      tx_internal_east_ack_out        =>  ,
+      -- to internal north east 
+      tx_internal_north_east_req_in   =>  ,
+      tx_internal_north_east_dat_in   =>  ,
+      tx_internal_north_east_ack_out  =>  ,
+      -- to internal north
+      tx_internal_north_req_in        =>  ,
+      tx_internal_north_dat_in        =>  ,
+      tx_internal_north_ack_out       =>  
+  );
+
 END async_noc_router_arc;
