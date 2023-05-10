@@ -34,16 +34,25 @@ architecture Behavioral of arbiter is
 
     SIGNAL grant1, grant2 : STD_LOGIC;
     SIGNAL mid1, mid2 : STD_LOGIC;
+    SIGNAL req1, req2 : STD_LOGIC;
+
+    signal mergeAckA, mergeAckB : std_logic;
 
 begin
 
     -- MUTEX  
-    mid1 <= inA_req nand mid2 after AND2_DELAY + NOT1_DELAY + XOR_DELAY + REG_CQ_DELAY;
+    mid1 <= inA_req nand mid2 after AND2_DELAY + NOT1_DELAY;
     -- set the second one slightly out of phase with the first,
     -- this will resolve "metastability" that cannot be simulated
-    mid2 <= inB_req nand mid1 after AND2_DELAY + NOT1_DELAY  + XOR_DELAY + REG_CQ_DELAY + 1 ns; 
-    grant1 <= (not mid1) and mid2 after AND2_DELAY + NOT1_DELAY + XOR_DELAY + REG_CQ_DELAY;
-    grant2 <= (not mid2) and mid1 after AND2_DELAY + NOT1_DELAY + XOR_DELAY + REG_CQ_DELAY;
+    mid2 <= inB_req nand mid1 after AND2_DELAY + NOT1_DELAY + 1 ns; 
+    grant1 <= ((not mid1) and mid2) after AND2_DELAY + NOT1_DELAY;
+    grant2 <= ((not mid2) and mid1) after AND2_DELAY + NOT1_DELAY;
+    
+    req1 <= grant1 and (not mergeAckB) after AND2_DELAY + NOT1_DELAY;
+    req2 <= grant2 and (not mergeAckA) after AND2_DELAY + NOT1_DELAY;
+
+    inA_ack <= mergeAckA;
+    inB_ack <= mergeAckB;
 
     -- MERGE
     merge : ENTITY work.merge 
@@ -55,12 +64,12 @@ begin
     PORT MAP(
         rst   => rst,
         --Input channel 1
-        inA_req   => grant1,
-        inA_ack   => inA_ack,
+        inA_req   => req1,
+        inA_ack   => mergeAckA,
         inA_data  => inA_data,
         -- Input channel 2
-        inB_req   => grant2,
-        inB_ack   => inB_ack,
+        inB_req   => req2,
+        inB_ack   => mergeAckB,
         inB_data  => inB_data,
         -- Output channel
         outC_req  => outC_req,

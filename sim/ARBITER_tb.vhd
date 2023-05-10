@@ -38,22 +38,22 @@ BEGIN
 
         inA_req_TB <= '1';
         data_a_TB <= x"1234";
-
+        --
         WAIT UNTIL inA_ack_TB = '1';
-
+        --
         inA_req_TB <= '0';
         data_a_TB <= x"0000";
-
+        --
         WAIT UNTIL inA_ack_TB = '0';
-
+        --
         inB_req_TB <= '1';
         data_b_TB <= x"5678";    
-
+        --
         WAIT UNTIL inB_ack_TB = '1';
-
+        --
         inB_req_TB <= '0';
         data_b_TB <= x"0000";
-
+        --
         WAIT UNTIL inB_ack_TB = '0';
 
         inB_req_TB <= '1';
@@ -62,17 +62,13 @@ BEGIN
         inA_req_TB <= '1';
         data_a_TB <= x"aaaa";
 
-        WAIT UNTIL inB_ack_TB = '1' or inA_ack_TB = '1';
-        inB_req_TB <= not inB_ack_TB;
-        inA_req_TB <= not inA_ack_TB;
+        WAIT UNTIL inB_ack_TB = '1';
+        inB_req_TB <= '0';
 
-        --WAIT UNTIL inB_ack_TB = '1' or inA_ack_TB = '1';
+        WAIT UNTIL inA_ack_TB = '1';
+        inA_req_TB <= '0';
 
-        --WAIT FOR 50 ns;
-        --WAIT FOR 50 ns;
-        --inA_req_TB <= '0';
-
-        WAIT FOR 500 ns;
+        WAIT FOR 50 ns;
         ASSERT 0 = 1 REPORT "Bye" SEVERITY failure;
     END PROCESS;
 

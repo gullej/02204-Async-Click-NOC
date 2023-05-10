@@ -6,7 +6,7 @@ USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.numeric_std.ALL;
 USE work.defs.ALL;
 
-ENTITY asyncoc_io_port_diagonal IS
+ENTITY async_noc_io_port_diagonal IS
     GENERIC (
         LOCATION_X            :  integer;
         LOCATION_Y            :  integer;
@@ -56,9 +56,9 @@ ENTITY asyncoc_io_port_diagonal IS
         tx_internal_local_ack_out       : IN  STD_LOGIC;
         tx_internal_local_dat_in        : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0)
     );
-END asyncoc_io_port_diagonal;
+END async_noc_io_port_diagonal;
 
-ARCHITECTURE asyncoc_io_port_diagonal_arc OF asyncoc_io_port_diagonal IS
+ARCHITECTURE asyncoc_io_port_diagonal_arc OF async_noc_io_port_diagonal IS
 
 CONSTANT ROUTER_LOCATION_X  :  STD_LOGIC_VECTOR(ADDR_WIDTH-1 DOWNTO 0) := STD_LOGIC_VECTOR(to_unsigned(LOCATION_X,ADDR_WIDTH));
 CONSTANT ROUTER_LOCATION_Y  :  STD_LOGIC_VECTOR(ADDR_WIDTH-1 DOWNTO 0) := STD_LOGIC_VECTOR(to_unsigned(LOCATION_y,ADDR_WIDTH));
