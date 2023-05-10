@@ -4,76 +4,67 @@ LIBRARY IEEE;
   USE IEEE.STD_LOGIC_UNSIGNED.ALL;
   use work.defs.all;
 
-LIBRARY OSVVM;
-  USE OSVVM.RANDOMPKG.ALL;
-  USE OSVVM.COVERAGEPKG.ALL;
-
 ENTITY async_noc_router_tb IS
-    generic (
-        DATA_WIDTH : integer := 8
-    );
 END async_noc_router_tb;
 
 ARCHITECTURE testbench OF async_noc_router_tb IS
-
-SHARED VARIABLE rnd : RandomPType;
 
 SIGNAL rst  :  STD_LOGIC;
 
 SIGNAL rx_req_in_dem_N_TB    : STD_LOGIC;
 SIGNAL rx_ack_out_dem_N_TB   : STD_LOGIC;
-SIGNAL rx_dat_in_N_TB        : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL rx_dat_in_N_TB        : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 SIGNAL tx_ack_in_arb_N_TB    : STD_LOGIC;
 SIGNAL tx_req_out_arb_N_TB   : STD_LOGIC;
-SIGNAL tx_dat_out_N_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_dat_out_N_TB       : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 SIGNAL rx_req_in_dem_NE_TB   : STD_LOGIC;
 SIGNAL rx_ack_out_dem_NE_TB  : STD_LOGIC;
-SIGNAL rx_dat_in_NE_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL rx_dat_in_NE_TB       : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 SIGNAL tx_ack_in_arb_NE_TB   : STD_LOGIC;
 SIGNAL tx_req_out_arb_NE_TB  : STD_LOGIC;
-SIGNAL tx_dat_out_NE_TB      : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_dat_out_NE_TB      : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 SIGNAL rx_req_in_dem_E_TB    : STD_LOGIC;
 SIGNAL rx_ack_out_dem_E_TB   : STD_LOGIC;
-SIGNAL rx_dat_in_E_TB        : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL rx_dat_in_E_TB        : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 SIGNAL tx_ack_in_arb_E_TB    : STD_LOGIC;
 SIGNAL tx_req_out_arb_E_TB   : STD_LOGIC;
-SIGNAL tx_dat_out_E_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_dat_out_E_TB       : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 SIGNAL rx_req_in_dem_SE_TB   : STD_LOGIC;
 SIGNAL rx_ack_out_dem_SE_TB  : STD_LOGIC;
-SIGNAL rx_dat_in_SE_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL rx_dat_in_SE_TB       : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 SIGNAL tx_ack_in_arb_SE_TB   : STD_LOGIC;
 SIGNAL tx_req_out_arb_SE_TB  : STD_LOGIC;
-SIGNAL tx_dat_out_SE_TB      : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_dat_out_SE_TB      : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 SIGNAL rx_req_in_dem_S_TB    : STD_LOGIC;
 SIGNAL rx_ack_out_dem_S_TB   : STD_LOGIC;
-SIGNAL rx_dat_in_S_TB        : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL rx_dat_in_S_TB        : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 SIGNAL tx_ack_in_arb_S_TB    : STD_LOGIC;
 SIGNAL tx_req_out_arb_S_TB   : STD_LOGIC;
-SIGNAL tx_dat_out_S_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_dat_out_S_TB       : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 SIGNAL rx_req_in_dem_SW_TB   : STD_LOGIC;
 SIGNAL rx_ack_out_dem_SW_TB  : STD_LOGIC;
-SIGNAL rx_dat_in_SW_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL rx_dat_in_SW_TB       : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 SIGNAL tx_ack_in_arb_SW_TB   : STD_LOGIC;
 SIGNAL tx_req_out_arb_SW_TB  : STD_LOGIC;
-SIGNAL tx_dat_out_SW_TB      : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_dat_out_SW_TB      : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 SIGNAL rx_req_in_dem_W_TB    : STD_LOGIC;
 SIGNAL rx_ack_out_dem_W_TB   : STD_LOGIC;
-SIGNAL rx_dat_in_W_TB        : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL rx_dat_in_W_TB        : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 SIGNAL tx_ack_in_arb_W_TB    : STD_LOGIC;
 SIGNAL tx_req_out_arb_W_TB   : STD_LOGIC;
-SIGNAL tx_dat_out_W_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_dat_out_W_TB       : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 SIGNAL rx_req_in_dem_NW_TB   : STD_LOGIC;
 SIGNAL rx_ack_out_dem_NW_TB  : STD_LOGIC;
-SIGNAL rx_dat_in_NW_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL rx_dat_in_NW_TB       : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 SIGNAL tx_ack_in_arb_NW_TB   : STD_LOGIC;
 SIGNAL tx_req_out_arb_NW_TB  : STD_LOGIC;
-SIGNAL tx_dat_out_NW_TB      : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_dat_out_NW_TB      : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 SIGNAL tx_req_in_dem_L_TB    : STD_LOGIC;
 SIGNAL tx_ack_out_dem_L_TB   : STD_LOGIC;
-SIGNAL tx_dat_in_L_TB        : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_dat_in_L_TB        : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 SIGNAL rx_ack_in_arb_L_TB    : STD_LOGIC;
 SIGNAL rx_req_out_arb_L_TB   : STD_LOGIC;
-SIGNAL rx_dat_out_L_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL rx_dat_out_L_TB       : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
 
 ATTRIBUTE dont_touch  :  STRING;
 ATTRIBUTE dont_touch of rx_req_in_dem_N_TB  , rx_ack_out_dem_N_TB  : SIGNAL IS "true";   
