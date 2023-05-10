@@ -131,15 +131,6 @@ BEGIN
         inA_req_TB <= '1';
         data_in_TB <= "0100" & x"9AB"; -- equal down, should go
 
-        WAIT UNTIL inI_ack_TB = '1';
-
-        inA_req_TB <= '0';
-
-        WAIT UNTIL inI_ack_TB = '0';
-
-        inA_req_TB <= '1';
-        data_in_TB <= "0010" & x"DEF"; -- down up, should go 
-
         WAIT UNTIL inE_ack_TB = '1';
 
         inA_req_TB <= '0';
@@ -147,25 +138,7 @@ BEGIN
         WAIT UNTIL inE_ack_TB = '0';
 
         inA_req_TB <= '1';
-        data_in_TB <= "1000" & x"9AB"; -- up down, should go 
-
-        WAIT UNTIL inG_ack_TB = '1';
-
-        inA_req_TB <= '0';
-
-        WAIT FOR 50 ns;
-
-        inA_req_TB <= '1';
-        data_in_TB <= "1010" & x"9AB"; -- up up, should go
-
-        WAIT UNTIL inD_ack_TB = '1';
-
-        inA_req_TB <= '0';
-
-        WAIT UNTIL inD_ack_TB = '0';
-
-        inA_req_TB <= '1';
-        data_in_TB <= "1001" & x"9AB"; -- up equal, should go
+        data_in_TB <= "0010" & x"DEF"; -- down up, should go 
 
         WAIT UNTIL inB_ack_TB = '1';
 
@@ -174,17 +147,44 @@ BEGIN
         WAIT UNTIL inB_ack_TB = '0';
 
         inA_req_TB <= '1';
-        data_in_TB <= "0110" & x"9AB"; -- equal up, should go
+        data_in_TB <= "1000" & x"9AB"; -- up down, should go 
 
         WAIT UNTIL inF_ack_TB = '1';
 
         inA_req_TB <= '0';
 
         WAIT UNTIL inF_ack_TB = '0';
+
+        inA_req_TB <= '1';
+        data_in_TB <= "1010" & x"9AB"; -- up up, should go
+
+        WAIT UNTIL inH_ack_TB = '1';
+
+        inA_req_TB <= '0';
+
+        WAIT UNTIL inH_ack_TB = '0';
+
+        inA_req_TB <= '1';
+        data_in_TB <= "1001" & x"9AB"; -- up equal, should go
+
+        WAIT UNTIL inG_ack_TB = '1';
+
+        inA_req_TB <= '0';
+
+        WAIT UNTIL inG_ack_TB = '0';
+
+        inA_req_TB <= '1';
+        data_in_TB <= "0110" & x"9AB"; -- equal up, should go
+
+        WAIT UNTIL inI_ack_TB = '1';
+
+        inA_req_TB <= '0';
+
+        WAIT UNTIL inI_ack_TB = '0';
         ASSERT 0 = 1 REPORT "Bye" SEVERITY failure;
     END PROCESS;
 
-    local_DUT : entity work.asyncoc_io_port_local
+    local_DUT : entity work.async_noc_io_port_local
     GENERIC MAP (
         LOCATION_X               =>  1,
         LOCATION_Y               =>  1,
@@ -193,11 +193,6 @@ BEGIN
     PORT MAP (
         -- control
         reset                    =>  rst,
-        start                    =>  '0',
-        -- from local
-        rx_local_req_in          =>  arbiter_inLocal_req_TB ,
-        rx_local_ack_out         =>  arbiter_inLocal_ack_TB ,
-        rx_local_dat_in          =>  arbiter_inLocal_data_TB,
         -- from internal a
         rx_internal_a_req_in     =>  arbiter_inA_req_TB ,
         rx_internal_a_ack_out    =>  arbiter_inA_ack_TB ,
@@ -214,19 +209,22 @@ BEGIN
         rx_internal_d_req_in     =>  arbiter_inD_req_TB ,
         rx_internal_d_dat_in     =>  arbiter_inD_data_TB ,
         rx_internal_d_ack_out    =>  arbiter_inD_ack_TB,
-
+        -- from internal e
         rx_internal_e_req_in     =>  arbiter_inE_req_TB ,
         rx_internal_e_dat_in     =>  arbiter_inE_data_TB ,
         rx_internal_e_ack_out    =>  arbiter_inE_ack_TB,
-
+        -- from internal f
         rx_internal_f_req_in     =>  arbiter_inF_req_TB ,
         rx_internal_f_dat_in     =>  arbiter_inF_data_TB ,
         rx_internal_f_ack_out    =>  arbiter_inF_ack_TB,
-
+        -- from internal h
         rx_internal_g_req_in     =>  arbiter_inG_req_TB ,
         rx_internal_g_dat_in     =>  arbiter_inG_data_TB ,
         rx_internal_g_ack_out    =>  arbiter_inG_ack_TB,
-
+        -- from internal g
+        rx_internal_h_req_in     =>  arbiter_inH_req_TB ,
+        rx_internal_h_dat_in     =>  arbiter_inH_data_TB ,
+        rx_internal_h_ack_out    =>  arbiter_inH_ack_TB,
         -- from external
         rx_external_req_in       =>  inA_req_TB,
         rx_external_ack_out      =>  inA_ack_TB,

@@ -6,7 +6,7 @@ USE IEEE.STD_LOGIC_1164.ALL;
 USE IEEE.numeric_std.ALL;
 USE work.defs.ALL;
 
-ENTITY asyncoc_io_port_local IS
+ENTITY async_noc_io_port_local IS
     GENERIC (
         LOCATION_X            :  integer;
         LOCATION_Y            :  integer;
@@ -16,11 +16,6 @@ ENTITY asyncoc_io_port_local IS
         -- control
         reset : IN STD_LOGIC;
         start : IN STD_LOGIC;
-
-        -- from local
-        rx_local_req_in     : IN  STD_LOGIC;
-        rx_local_ack_out    : OUT STD_LOGIC;
-        rx_local_dat_in     : IN  STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
 
         -- from internal a
         rx_internal_a_req_in  : IN STD_LOGIC;
@@ -51,12 +46,17 @@ ENTITY asyncoc_io_port_local IS
         rx_internal_f_req_in  : IN STD_LOGIC;
         rx_internal_f_dat_in  : IN STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);   
         rx_internal_f_ack_out : OUT STD_LOGIC;
-
+        
         -- from internal g
         rx_internal_g_req_in  : IN STD_LOGIC;
         rx_internal_g_dat_in  : IN STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);   
         rx_internal_g_ack_out : OUT STD_LOGIC;
         
+        -- from internal h
+        rx_internal_h_req_in     : IN  STD_LOGIC;
+        rx_internal_h_ack_out    : OUT STD_LOGIC;
+        rx_internal_h_dat_in     : IN  STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+
         -- from external
         rx_external_req_in  : IN  STD_LOGIC;
         rx_external_ack_out : OUT STD_LOGIC;
@@ -107,9 +107,9 @@ ENTITY asyncoc_io_port_local IS
         tx_internal_north_dat_in        : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
         tx_internal_north_ack_out       : IN  STD_LOGIC
     );
-END asyncoc_io_port_local;
+END async_noc_io_port_local;
 
-ARCHITECTURE asyncoc_io_port_straight_arc OF asyncoc_io_port_local IS
+ARCHITECTURE asyncoc_io_port_straight_arc OF async_noc_io_port_local IS
 
     CONSTANT ROUTER_LOCATION_X  :  STD_LOGIC_VECTOR(ADDR_WIDTH-1 DOWNTO 0) := STD_LOGIC_VECTOR(to_unsigned(LOCATION_X,ADDR_WIDTH));
     CONSTANT ROUTER_LOCATION_Y  :  STD_LOGIC_VECTOR(ADDR_WIDTH-1 DOWNTO 0) := STD_LOGIC_VECTOR(to_unsigned(LOCATION_y,ADDR_WIDTH));
@@ -255,13 +255,13 @@ PORT MAP(
     -- Control
     rst           => reset,
     -- Input channel from local
-    inA_req       => rx_local_req_in,
-    inA_data      => rx_local_dat_in,
-    inA_ack       => rx_local_ack_out,
+    inA_req       => rx_internal_a_req_in,
+    inA_data      => rx_internal_a_dat_in,
+    inA_ack       => rx_internal_a_ack_out,
     -- Input channel from internal a
-    inB_req       => rx_internal_a_req_in,
-    inB_data      => rx_internal_a_dat_in,
-    inB_ack       => rx_internal_a_ack_out,
+    inB_req       => rx_internal_b_req_in,
+    inB_data      => rx_internal_b_dat_in,
+    inB_ack       => rx_internal_b_ack_out,
     -- Output channel to arbiter_out
     outC_req      => arbiter_a_req_in,
     outC_data     => arbiter_a_dat_in,
@@ -273,13 +273,13 @@ PORT MAP(
     -- Control
     rst           => reset,
     -- Input channel from internal b
-    inA_req       => rx_internal_b_req_in,
-    inA_data      => rx_internal_b_dat_in,
-    inA_ack       => rx_internal_b_ack_out,
+    inA_req       => rx_internal_c_req_in,
+    inA_data      => rx_internal_c_dat_in,
+    inA_ack       => rx_internal_c_ack_out,
     -- Input channel from internal c
-    inB_req       => rx_internal_c_req_in,
-    inB_data      => rx_internal_c_dat_in,
-    inB_ack       => rx_internal_c_ack_out,
+    inB_req       => rx_internal_d_req_in,
+    inB_data      => rx_internal_d_dat_in,
+    inB_ack       => rx_internal_d_ack_out,
     -- Output channel to arbiter_out
     outC_req      => arbiter_b_req_in,
     outC_data     => arbiter_b_dat_in,
@@ -316,13 +316,13 @@ arbiter_leaf_d : entity work.arbiter
 PORT MAP(
     rst           => reset,
     -- Input channel from local
-    inA_req       => rx_internal_d_req_in ,
-    inA_data      => rx_internal_d_dat_in ,
-    inA_ack       => rx_internal_d_ack_out,
+    inA_req       => rx_internal_e_req_in ,
+    inA_data      => rx_internal_e_dat_in ,
+    inA_ack       => rx_internal_e_ack_out,
     -- Input channel from internal a
-    inB_req       => rx_internal_e_req_in ,
-    inB_data      => rx_internal_e_dat_in ,
-    inB_ack       => rx_internal_e_ack_out,
+    inB_req       => rx_internal_f_req_in ,
+    inB_data      => rx_internal_f_dat_in ,
+    inB_ack       => rx_internal_f_ack_out,
     -- Output channel to arbiter_out
     outC_req      => arbiter_d_req_in ,
     outC_data     => arbiter_d_dat_in ,
@@ -333,13 +333,13 @@ arbiter_leaf_e : entity work.arbiter
 PORT MAP(
     rst           => reset,
     -- Input channel from internal b
-    inA_req       => rx_internal_f_req_in ,
-    inA_data      => rx_internal_f_dat_in ,
-    inA_ack       => rx_internal_f_ack_out,
+    inA_req       => rx_internal_g_req_in ,
+    inA_data      => rx_internal_g_dat_in ,
+    inA_ack       => rx_internal_g_ack_out,
     -- Input channel from internal c
-    inB_req       => rx_internal_g_req_in ,
-    inB_data      => rx_internal_g_dat_in ,
-    inB_ack       => rx_internal_g_ack_out,
+    inB_req       => rx_internal_h_req_in ,
+    inB_data      => rx_internal_h_dat_in ,
+    inB_ack       => rx_internal_h_ack_out,
     -- Output channel to arbiter_out
     outC_req      => arbiter_e_req_in ,
     outC_data     => arbiter_e_dat_in ,
