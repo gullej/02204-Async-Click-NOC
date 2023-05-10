@@ -8,33 +8,33 @@ USE work.defs.ALL;
 
 ENTITY async_noc_io_port_diagonal IS
     GENERIC (
-        LOCATION_X            :  integer;
-        LOCATION_Y            :  integer;
-        ADDR_WIDTH            :  integer
+        LOCATION_X                      :  integer;
+        LOCATION_Y                      :  integer;
+        ADDR_WIDTH                      :  integer
     );
     PORT (
         -- control
-        reset                 : IN STD_LOGIC;
+        reset                           : IN STD_LOGIC;
 
         -- from local
-        rx_local_req_in       : IN  STD_LOGIC;
-        rx_local_ack_out      : OUT STD_LOGIC;
-        rx_local_dat_in       : IN  STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        rx_local_req_in                 : IN  STD_LOGIC;
+        rx_local_ack_out                : OUT STD_LOGIC;
+        rx_local_dat_in                 : IN  STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
 
         -- from internal
-        rx_internal_req_in    : IN STD_LOGIC;
-        rx_internal_ack_out   : OUT STD_LOGIC;
-        rx_internal_dat_in    : IN STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        rx_internal_req_in              : IN STD_LOGIC;
+        rx_internal_ack_out             : OUT STD_LOGIC;
+        rx_internal_dat_in              : IN STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
 
         -- from external
-        rx_external_req_in    : IN  STD_LOGIC;
-        rx_external_ack_out   : OUT STD_LOGIC;
-        rx_external_dat_in    : IN  STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        rx_external_req_in              : IN  STD_LOGIC;
+        rx_external_ack_out             : OUT STD_LOGIC;
+        rx_external_dat_in              : IN  STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
 
         -- to external
-        tx_external_req_in    : OUT STD_LOGIC;
-        tx_external_ack_out   : IN  STD_LOGIC;
-        tx_external_dat_in    : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        tx_external_req_in              : OUT STD_LOGIC;
+        tx_external_ack_out             : IN  STD_LOGIC;
+        tx_external_dat_in              : OUT STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
 
         -- to internal diagonal port
         tx_internal_diag_req_in         : OUT STD_LOGIC;
