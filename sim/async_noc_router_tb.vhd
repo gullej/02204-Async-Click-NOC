@@ -20,126 +20,164 @@ SHARED VARIABLE rnd : RandomPType;
 
 SIGNAL rst  :  STD_LOGIC;
 
-SIGNAL src_ack_in   :  STD_LOGIC;
-SIGNAL src_req_out  :  STD_LOGIC;
-SIGNAL src_data     :  STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
+SIGNAL rx_req_in_dem_N_TB    : STD_LOGIC;
+SIGNAL rx_ack_out_dem_N_TB   : STD_LOGIC;
+SIGNAL rx_dat_in_N_TB        : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_ack_in_arb_N_TB    : STD_LOGIC;
+SIGNAL tx_req_out_arb_N_TB   : STD_LOGIC;
+SIGNAL tx_dat_out_N_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL rx_req_in_dem_NE_TB   : STD_LOGIC;
+SIGNAL rx_ack_out_dem_NE_TB  : STD_LOGIC;
+SIGNAL rx_dat_in_NE_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_ack_in_arb_NE_TB   : STD_LOGIC;
+SIGNAL tx_req_out_arb_NE_TB  : STD_LOGIC;
+SIGNAL tx_dat_out_NE_TB      : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL rx_req_in_dem_E_TB    : STD_LOGIC;
+SIGNAL rx_ack_out_dem_E_TB   : STD_LOGIC;
+SIGNAL rx_dat_in_E_TB        : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_ack_in_arb_E_TB    : STD_LOGIC;
+SIGNAL tx_req_out_arb_E_TB   : STD_LOGIC;
+SIGNAL tx_dat_out_E_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL rx_req_in_dem_SE_TB   : STD_LOGIC;
+SIGNAL rx_ack_out_dem_SE_TB  : STD_LOGIC;
+SIGNAL rx_dat_in_SE_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_ack_in_arb_SE_TB   : STD_LOGIC;
+SIGNAL tx_req_out_arb_SE_TB  : STD_LOGIC;
+SIGNAL tx_dat_out_SE_TB      : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL rx_req_in_dem_S_TB    : STD_LOGIC;
+SIGNAL rx_ack_out_dem_S_TB   : STD_LOGIC;
+SIGNAL rx_dat_in_S_TB        : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_ack_in_arb_S_TB    : STD_LOGIC;
+SIGNAL tx_req_out_arb_S_TB   : STD_LOGIC;
+SIGNAL tx_dat_out_S_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL rx_req_in_dem_SW_TB   : STD_LOGIC;
+SIGNAL rx_ack_out_dem_SW_TB  : STD_LOGIC;
+SIGNAL rx_dat_in_SW_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_ack_in_arb_SW_TB   : STD_LOGIC;
+SIGNAL tx_req_out_arb_SW_TB  : STD_LOGIC;
+SIGNAL tx_dat_out_SW_TB      : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL rx_req_in_dem_W_TB    : STD_LOGIC;
+SIGNAL rx_ack_out_dem_W_TB   : STD_LOGIC;
+SIGNAL rx_dat_in_W_TB        : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_ack_in_arb_W_TB    : STD_LOGIC;
+SIGNAL tx_req_out_arb_W_TB   : STD_LOGIC;
+SIGNAL tx_dat_out_W_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL rx_req_in_dem_NW_TB   : STD_LOGIC;
+SIGNAL rx_ack_out_dem_NW_TB  : STD_LOGIC;
+SIGNAL rx_dat_in_NW_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_ack_in_arb_NW_TB   : STD_LOGIC;
+SIGNAL tx_req_out_arb_NW_TB  : STD_LOGIC;
+SIGNAL tx_dat_out_NW_TB      : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL tx_req_in_dem_L_TB    : STD_LOGIC;
+SIGNAL tx_ack_out_dem_L_TB   : STD_LOGIC;
+SIGNAL tx_dat_in_L_TB        : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
+SIGNAL rx_ack_in_arb_L_TB    : STD_LOGIC;
+SIGNAL rx_req_out_arb_L_TB   : STD_LOGIC;
+SIGNAL rx_dat_out_L_TB       : STD_LOGIC_VECTOR(DATAWIDTH-1 DOWNTO 0);
 
-SIGNAL snk_ack_out  :  STD_LOGIC;
-SIGNAL snk_req_in   :  STD_LOGIC;
-SIGNAL snk_data     :  STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0)
-
-SIGNAL    phase_src   :  STD_LOGIC;
-ATTRIBUTE DONT_TOUCH  :  STRING;
-ATTRIBUTE DONT_TOUCH OF  phase_src  : SIGNAL IS "TRUE";   
-ATTRIBUTE DONT_TOUCH OF  src_data   : SIGNAL IS "TRUE";  
-ATTRIBUTE DONT_TOUCH OF  phase_src  : SIGNAL IS "TRUE";
-
-SIGNAL phase_snk      :  STD_LOGIC;
-ATTRIBUTE DONT_TOUCH  :  STRING;
-ATTRIBUTE DONT_TOUCH OF  phase_snk  : SIGNAL IS "TRUE";
-ATTRIBUTE DONT_TOUCH OF  snk_data   : SIGNAL IS "TRUE";
-ATTRIBUTE DONT_TOUCH OF  phase_snk  : SIGNAL IS "TRUE";
+ATTRIBUTE dont_touch  :  STRING;
+ATTRIBUTE dont_touch of rx_req_in_dem_N_TB  , rx_ack_out_dem_N_TB  : SIGNAL IS "true";   
+ATTRIBUTE dont_touch of tx_ack_in_arb_N_TB  , tx_req_out_arb_N_TB  : SIGNAL IS "true";  
+ATTRIBUTE dont_touch of rx_req_in_dem_NE_TB , rx_ack_out_dem_NE_TB : SIGNAL IS "true";  
+ATTRIBUTE dont_touch of tx_ack_in_arb_NE_TB , tx_req_out_arb_NE_TB : SIGNAL IS "true";  
+ATTRIBUTE dont_touch of rx_req_in_dem_E_TB  , rx_ack_out_dem_E_TB  : SIGNAL IS "true";  
+ATTRIBUTE dont_touch of tx_ack_in_arb_E_TB  , tx_req_out_arb_E_TB  : SIGNAL IS "true";  
+ATTRIBUTE dont_touch of rx_req_in_dem_SE_TB , rx_ack_out_dem_SE_TB : SIGNAL IS "true";  
+ATTRIBUTE dont_touch of tx_ack_in_arb_SE_TB , tx_req_out_arb_SE_TB : SIGNAL IS "true";  
+ATTRIBUTE dont_touch of rx_req_in_dem_S_TB  , rx_ack_out_dem_S_TB  : SIGNAL IS "true";  
+ATTRIBUTE dont_touch of tx_ack_in_arb_S_TB  , tx_req_out_arb_S_TB  : SIGNAL IS "true";  
+ATTRIBUTE dont_touch of rx_req_in_dem_SW_TB , rx_ack_out_dem_SW_TB : SIGNAL IS "true";  
+ATTRIBUTE dont_touch of tx_ack_in_arb_SW_TB , tx_req_out_arb_SW_TB : SIGNAL IS "true";  
+ATTRIBUTE dont_touch of rx_req_in_dem_W_TB  , rx_ack_out_dem_W_TB  : SIGNAL IS "true";  
+ATTRIBUTE dont_touch of tx_ack_in_arb_W_TB  , tx_req_out_arb_W_TB  : SIGNAL IS "true";  
+ATTRIBUTE dont_touch of rx_req_in_dem_NW_TB , rx_ack_out_dem_NW_TB : SIGNAL IS "true";  
+ATTRIBUTE dont_touch of tx_ack_in_arb_NW_TB , tx_req_out_arb_NW_TB : SIGNAL IS "true";  
+ATTRIBUTE dont_touch of tx_req_in_dem_L_TB  , tx_ack_out_dem_L_TB  : SIGNAL IS "true";  
+ATTRIBUTE dont_touch of rx_ack_in_arb_L_TB  , rx_req_out_arb_L_TB  : SIGNAL IS "true";   
 
 BEGIN
 
-    rst  <= '1','0' after 100 ns;
+    stim : PROCESS
+    BEGIN
+    rst <= '1';
+    WAIT FOR 100 ns;
+    rst <= '0';
+    WAIT FOR 100 ns;
 
-    --phase_src    <=  (out_ack XNOR phase_src) AFTER XOR_DELAY;
-    --src_req_out  <= phase_src;
---
-    --SOURCE : PROCESS(click_src,rst) IS
-    --    BEGIN
-    --        IF rst = '1' THEN
-    --            phase_src  <=  '0';
-    --            src_data   <=  (OTHERS => '0');
-    --        ELSIF RISING_EDGE(phase_src) THEN
-    --            phase_src  <=  rnd.RandSlv(1)(1) AFTER REG_CQ_DELAY;
-    --            src_data   <=  rnd.RandSlv(DATA_WIDTH) AFTER REG_CQ_DELAY; 
-    --        END IF;
-    --END PROCESS;
---
-    --SINK : PROCESS(click_snk,rst) IS
-    --    BEGIN
-    --        IF rst = '1' THEN
-    --            phase_snk  <=  '0';
-    --            snk_data   <=  (OTHERS => '0');
-    --        ELSIF RISING_EDGE(click_snk) THEN
-    --            phase_snk  <=  rnd.RandSlv(1)(1) AFTER REG_CQ_DELAY;
-    --            snk_data   <=  rnd.RandSlv(DATA_WIDTH) AFTER REG_CQ_DELAY; 
-    --        END IF;
-    --END PROCESS;
+    END PROCESS;
 
-    --ROUTER_UT : ENTITY work.async_noc_router
-    --    generic map (
-    --        DATA_WIDTH => 8
-    --    )
-    --    port map (
-    --            -- control
-    --        reset            => ,
-    --        start            => ,
-    --        -- north direction
-    --        rx_req_in_dem_N  => ,
-    --        rx_ack_out_dem_N => ,
-    --        rx_dat_in_N      => ,
-    --        tx_ack_in_arb_N  => ,
-    --        tx_req_out_arb_N => ,
-    --        tx_dat_out_N     => ,
-    --        -- north east direction
-    --        rx_req_in_dem_NE => ,
-    --        rx_ack_out_dem_NE=> ,
-    --        rx_dat_in_NE     => ,
-    --        tx_ack_in_arb_NE => ,
-    --        tx_req_out_arb_NE=> ,
-    --        tx_dat_out_NE    => ,
-    --        -- east direction
-    --        rx_req_in_dem_E  => ,
-    --        rx_ack_out_dem_E => ,
-    --        rx_dat_in_E      => ,
-    --        tx_ack_in_arb_E  => ,
-    --        tx_req_out_arb_E => ,
-    --        tx_dat_out_E     => ,
-    --        -- south east direction
-    --        rx_req_in_dem_SE => ,
-    --        rx_ack_out_dem_SE=> ,
-    --        rx_dat_in_SE     => ,
-    --        tx_ack_in_arb_SE => ,
-    --        tx_req_out_arb_SE=> ,
-    --        tx_dat_out_SE    => ,
-    --        -- south direction
-    --        rx_req_in_dem_S  => ,
-    --        rx_ack_out_dem_S => ,
-    --        rx_dat_in_S      => ,
-    --        tx_ack_in_arb_S :=> ,
-    --        tx_req_out_arb_S => ,
-    --        tx_dat_out_S : OU=> ,
-    --        -- south west direction
-    --        rx_req_in_dem_SW => ,
-    --        rx_ack_out_dem_SW=> ,
-    --        rx_dat_in_SW     => ,
-    --        tx_ack_in_arb_SW => ,
-    --        tx_req_out_arb_SW=> ,
-    --        tx_dat_out_SW    => ,
-    --        -- west direction
-    --        rx_req_in_dem_W  => ,
-    --        rx_ack_out_dem_W => ,
-    --        rx_dat_in_W      => ,
-    --        tx_ack_in_arb_W  => ,
-    --        tx_req_out_arb_W => ,
-    --        tx_dat_out_W     => ,
-    --        -- north west direction
-    --        rx_req_in_dem_NW => ,
-    --        rx_ack_out_dem_NW=> ,
-    --        rx_dat_in_NW     => ,
-    --        tx_ack_in_arb_NW => ,
-    --        tx_req_out_arb_NW=> ,
-    --        tx_dat_out_NW    => ,
-    --        -- local direction
-    --        tx_req_in_dem_L  => ,
-    --        tx_ack_out_dem_L => ,
-    --        tx_dat_in_L      => ,
-    --        rx_ack_in_arb_L  => ,
-    --        rx_req_out_arb_L => ,
-    --        rx_dat_out_L     => 
-    --    );
+    router_DUT : entity work.async_noc_router
+    GENERIC MAP (
+        LOCATION_X               =>  1,
+        LOCATION_Y               =>  1,
+        ADDR_WIDTH               =>  2
+    )
+    PORT MAP (
+        -- control
+        reset => rst,
+        -- north direction
+        rx_req_in_dem_N   => rx_req_in_dem_N_TB,
+        rx_ack_out_dem_N  => rx_ack_out_dem_N_TB,
+        rx_dat_in_N       => rx_dat_in_N_TB,
+        tx_ack_in_arb_N   => tx_ack_in_arb_N_TB,
+        tx_req_out_arb_N  => tx_req_out_arb_N_TB,
+        tx_dat_out_N      => tx_dat_out_N_TB,
+        -- north east direction
+        rx_req_in_dem_NE  => rx_req_in_dem_NE_TB,
+        rx_ack_out_dem_NE => rx_ack_out_dem_NE_TB,
+        rx_dat_in_NE      => rx_dat_in_NE_TB,
+        tx_ack_in_arb_NE  => tx_ack_in_arb_NE_TB,
+        tx_req_out_arb_NE => tx_req_out_arb_NE_TB,
+        tx_dat_out_NE     => tx_dat_out_NE_TB,
+        -- east direction
+        rx_req_in_dem_E   => rx_req_in_dem_E_TB,
+        rx_ack_out_dem_E  => rx_ack_out_dem_E_TB,
+        rx_dat_in_E       => rx_dat_in_E_TB,
+        tx_ack_in_arb_E   => tx_ack_in_arb_E_TB,
+        tx_req_out_arb_E  => tx_req_out_arb_E_TB,
+        tx_dat_out_E      => tx_dat_out_E_TB,
+        -- south east direction
+        rx_req_in_dem_SE  => rx_req_in_dem_SE_TB,
+        rx_ack_out_dem_SE => rx_ack_out_dem_SE_TB,
+        rx_dat_in_SE      => rx_dat_in_SE_TB,
+        tx_ack_in_arb_SE  => tx_ack_in_arb_SE_TB,
+        tx_req_out_arb_SE => tx_req_out_arb_SE_TB,
+        tx_dat_out_SE     => tx_dat_out_SE_TB,
+        -- south direction
+        rx_req_in_dem_S   => rx_req_in_dem_S_TB,
+        rx_ack_out_dem_S  => rx_ack_out_dem_S_TB,
+        rx_dat_in_S       => rx_dat_in_S_TB,
+        tx_ack_in_arb_S   => tx_ack_in_arb_S_TB,
+        tx_req_out_arb_S  => tx_req_out_arb_S_TB,
+        tx_dat_out_S      => tx_dat_out_S_TB,
+        -- south west direction
+        rx_req_in_dem_SW  => rx_req_in_dem_SW_TB,
+        rx_ack_out_dem_SW => rx_ack_out_dem_SW_TB,
+        rx_dat_in_SW      => rx_dat_in_SW_TB,
+        tx_ack_in_arb_SW  => tx_ack_in_arb_SW_TB,
+        tx_req_out_arb_SW => tx_req_out_arb_SW_TB,
+        tx_dat_out_SW     => tx_dat_out_SW_TB,
+        -- west direction
+        rx_req_in_dem_W   => rx_req_in_dem_W_TB,
+        rx_ack_out_dem_W  => rx_ack_out_dem_W_TB,
+        rx_dat_in_W       => rx_dat_in_W_TB,
+        tx_ack_in_arb_W   => tx_ack_in_arb_W_TB,
+        tx_req_out_arb_W  => tx_req_out_arb_W_TB,
+        tx_dat_out_W      => tx_dat_out_W_TB,
+        -- north west direction
+        rx_req_in_dem_NW  => rx_req_in_dem_NW_TB,
+        rx_ack_out_dem_NW => rx_ack_out_dem_NW_TB,
+        rx_dat_in_NW      => rx_dat_in_NW_TB,
+        tx_ack_in_arb_NW  => tx_ack_in_arb_NW_TB,
+        tx_req_out_arb_NW => tx_req_out_arb_NW_TB,
+        tx_dat_out_NW     => tx_dat_out_NW_TB,
+        -- local direction
+        tx_req_in_dem_L   => tx_req_in_dem_L_TB,
+        tx_ack_out_dem_L  => tx_ack_out_dem_L_TB,
+        tx_dat_in_L       => tx_dat_in_L_TB,
+        rx_ack_in_arb_L   => rx_ack_in_arb_L_TB,
+        rx_req_out_arb_L  => rx_req_out_arb_L_TB,
+        rx_dat_out_L      => rx_dat_out_L_TB       
+    );
 
 END ARCHITECTURE;

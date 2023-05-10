@@ -52,9 +52,9 @@ ENTITY async_noc_io_port_local IS
         rx_internal_g_ack_out            : OUT STD_LOGIC;
         
         -- from internal h
-        rx_internal_h_req_in     : IN  STD_LOGIC;
-        rx_internal_h_ack_out    : OUT STD_LOGIC;
-        rx_internal_h_dat_in     : IN  STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
+        rx_internal_h_req_in             : IN  STD_LOGIC;
+        rx_internal_h_ack_out            : OUT STD_LOGIC;
+        rx_internal_h_dat_in             : IN  STD_LOGIC_VECTOR(DATA_WIDTH - 1 DOWNTO 0);
 
         -- from external
         rx_external_req_in               : IN  STD_LOGIC;
@@ -196,17 +196,6 @@ PORT MAP(
     ctrl_req_in_sel   =>  mux_sel_req ,
     ctrl_data_in_sel  =>  mux_sel_data,
     ctrl_ack_out_sel  =>  mux_sel_ack ,
-
-    -- will go north           mux_sel_data(7)
--- will go north east       mux_sel_data(6)
--- will go east       mux_sel_data(5)
--- will go south east       mux_sel_data(4)
--- will go south       mux_sel_data(3)
--- will go south west       mux_sel_data(2)
--- will go west       mux_sel_data(1)
--- will go nort west       mux_sel_data(0)
-
-
     -- Output channel 1, chosen by ctrl_data_in_sel(0)
     tx_req_out_B      =>  tx_internal_north_west_req_in ,
     tx_data_out_B     =>  tx_internal_north_west_dat_in ,

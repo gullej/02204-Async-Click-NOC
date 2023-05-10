@@ -86,7 +86,6 @@ SIGNAL y_dest  :  STD_LOGIC_VECTOR(ADDR_WIDTH-1 DOWNTO 0);
 
 BEGIN
 
-
 mux_sel_req  <=  fork_outC_req after XOR_DELAY + OR2_DELAY*ADDR_WIDTH + AND2_DELAY + NOT1_DELAY;
 
 x_dest  <=  fork_outC_data(DATA_WIDTH-1 DOWNTO DATA_WIDTH-ADDR_WIDTH);

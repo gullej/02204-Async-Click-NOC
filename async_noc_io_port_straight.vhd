@@ -102,7 +102,6 @@ mux_sel_data(0) <= (not x) and (not y)  AFTER AND2_DELAY + NOT1_DELAY;
 
 fork_outC_ack  <=  mux_sel_ack;
 
-
 fork_in : entity work.reg_fork
 Port map (
   rst         =>  reset,
@@ -174,7 +173,6 @@ PORT MAP(
 demux_in : entity work.DEMUX
 PORT MAP(
     rst => reset,
-    
     -- Input port
     inA_req  =>  fork_outB_req , 
     inA_data =>  fork_outB_data, 
