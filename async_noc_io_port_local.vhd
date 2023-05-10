@@ -15,7 +15,6 @@ ENTITY async_noc_io_port_local IS
     PORT (
         -- control
         reset : IN STD_LOGIC;
-        start : IN STD_LOGIC;
 
         -- from internal a
         rx_internal_a_req_in  : IN STD_LOGIC;

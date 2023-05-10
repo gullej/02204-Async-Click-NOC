@@ -11,21 +11,24 @@ END asyncoc_io_port_local_tb;
 ARCHITECTURE STRUCTURE OF asyncoc_io_port_local_tb IS
 
     SIGNAL rst : STD_LOGIC;
-    SIGNAL inA_req_TB, inA_ack_TB : STD_LOGIC;
-    SIGNAL inB_req_TB, inB_ack_TB : STD_LOGIC;
-    SIGNAL inC_req_TB, inC_ack_TB : STD_LOGIC;
-    SIGNAL inD_req_TB, inD_ack_TB : STD_LOGIC;
-    SIGNAL inE_req_TB, inE_ack_TB : STD_LOGIC;
-    SIGNAL inF_req_TB, inF_ack_TB : STD_LOGIC;
-    SIGNAL inG_req_TB, inG_ack_TB : STD_LOGIC;
-    SIGNAL inH_req_TB, inH_ack_TB : STD_LOGIC;
-    SIGNAL inI_req_TB, inI_ack_TB : STD_LOGIC;
-    SIGNAL data_in_TB : STD_LOGIC_VECTOR(15 DOWNTO 0);
-    SIGNAL data_b_TB, data_c_TB, data_d_TB, data_e_TB, data_f_TB, data_g_TB, data_h_TB, data_i_TB : STD_LOGIC_VECTOR(15 DOWNTO 0);
-
-    SIGNAL arbiter_inLocal_req_TB    :  STD_LOGIC;
-    SIGNAL arbiter_inLocal_ack_TB    :  STD_LOGIC;
-    SIGNAL arbiter_inLocal_data_TB   :  STD_LOGIC_VECTOR(15 DOWNTO 0);
+    SIGNAL inExternal_req_TB,  inExternal_ack_TB  :  STD_LOGIC;
+    SIGNAL inExternal_dat_TB   :  STD_LOGIC_VECTOR(15 DOWNTO 0);
+    SIGNAL inNW_req_TB,  inNW_ack_TB  :  STD_LOGIC;
+    SIGNAL inNW_dat_TB   :  STD_LOGIC_VECTOR(15 DOWNTO 0);
+    SIGNAL inW_req_TB,   inW_ack_TB   :  STD_LOGIC;
+    SIGNAL inW_dat_TB    :  STD_LOGIC_VECTOR(15 DOWNTO 0);
+    SIGNAL inSW_req_TB,  inSW_ack_TB  :  STD_LOGIC;
+    SIGNAL inSW_dat_TB   :  STD_LOGIC_VECTOR(15 DOWNTO 0);
+    SIGNAL inS_req_TB,   inS_ack_TB   : STD_LOGIC;
+    SIGNAL inS_dat_TB    :  STD_LOGIC_VECTOR(15 DOWNTO 0);
+    SIGNAL inSE_req_TB,  inSE_ack_TB  : STD_LOGIC;
+    SIGNAL inSE_dat_TB   :  STD_LOGIC_VECTOR(15 DOWNTO 0);
+    SIGNAL inE_req_TB,   inE_ack_TB   : STD_LOGIC;
+    SIGNAL inE_dat_TB    :  STD_LOGIC_VECTOR(15 DOWNTO 0);
+    SIGNAL inNE_req_TB,  inNE_ack_TB  : STD_LOGIC;
+    SIGNAL inNE_dat_TB   :  STD_LOGIC_VECTOR(15 DOWNTO 0);
+    SIGNAL inN_req_TB,   inN_ack_TB   : STD_LOGIC;
+    SIGNAL inN_dat_TB    : STD_LOGIC_VECTOR(15 DOWNTO 0);
 
     SIGNAL arbiter_inA_req_TB        :  STD_LOGIC;
     SIGNAL arbiter_inA_ack_TB        :  STD_LOGIC;
@@ -54,50 +57,59 @@ ARCHITECTURE STRUCTURE OF asyncoc_io_port_local_tb IS
     SIGNAL arbiter_inG_req_TB        :  STD_LOGIC;
     SIGNAL arbiter_inG_ack_TB        :  STD_LOGIC;
     SIGNAL arbiter_inG_data_TB       :  STD_LOGIC_VECTOR(15 DOWNTO 0);
+    
+    SIGNAL arbiter_inH_req_TB        :  STD_LOGIC;
+    SIGNAL arbiter_inH_ack_TB        :  STD_LOGIC;
+    SIGNAL arbiter_inH_data_TB       :  STD_LOGIC_VECTOR(15 DOWNTO 0);
 
     SIGNAL arbiter_outA_req_TB       :  STD_LOGIC;
     SIGNAL arbiter_outA_ack_TB       :  STD_LOGIC;
     SIGNAL arbiter_outA_data_TB      :  STD_LOGIC_VECTOR(15 DOWNTO 0);
     
-
     ATTRIBUTE dont_touch : STRING;
-    ATTRIBUTE dont_touch OF inA_req_TB, inA_ack_TB : SIGNAL IS "true";
-    ATTRIBUTE dont_touch OF inB_req_TB, inB_ack_TB : SIGNAL IS "true";
-    ATTRIBUTE dont_touch OF inC_req_TB, inC_ack_TB : SIGNAL IS "true";
-    ATTRIBUTE dont_touch OF inD_req_TB, inD_ack_TB : SIGNAL IS "true";
-    ATTRIBUTE dont_touch OF inE_req_TB, inE_ack_TB : SIGNAL IS "true";
-    ATTRIBUTE dont_touch OF inF_req_TB, inF_ack_TB : SIGNAL IS "true";
-    ATTRIBUTE dont_touch OF inG_req_TB, inG_ack_TB : SIGNAL IS "true";
-    ATTRIBUTE dont_touch OF inH_req_TB, inH_ack_TB : SIGNAL IS "true";
-    ATTRIBUTE dont_touch OF inI_req_TB, inI_ack_TB : SIGNAL IS "true";
+    ATTRIBUTE dont_touch OF inExternal_req_TB, inExternal_ack_TB : SIGNAL IS "true";
+    ATTRIBUTE dont_touch OF inNW_req_TB, inNW_ack_TB : SIGNAL IS "true";
+    ATTRIBUTE dont_touch OF inW_req_TB,  inW_ack_TB  : SIGNAL IS "true";
+    ATTRIBUTE dont_touch OF inSW_req_TB, inSW_ack_TB : SIGNAL IS "true";
+    ATTRIBUTE dont_touch OF inS_req_TB,  inS_ack_TB  : SIGNAL IS "true";
+    ATTRIBUTE dont_touch OF inSE_req_TB, inSE_ack_TB : SIGNAL IS "true";
+    ATTRIBUTE dont_touch OF inE_req_TB,  inE_ack_TB  : SIGNAL IS "true";
+    ATTRIBUTE dont_touch OF inNE_req_TB, inNE_ack_TB : SIGNAL IS "true";
+    ATTRIBUTE dont_touch OF inN_req_TB,  inN_ack_TB  : SIGNAL IS "true";
 
-    ATTRIBUTE dont_touch of arbiter_inLocal_req_TB    :  SIGNAL IS "true";
-    ATTRIBUTE dont_touch of arbiter_inLocal_ack_TB    :  SIGNAL IS "true";
-    ATTRIBUTE dont_touch of arbiter_inLocal_data_TB   :  SIGNAL IS "true";
-    ATTRIBUTE dont_touch of arbiter_inA_req_TB        :  SIGNAL IS "true";
-    ATTRIBUTE dont_touch of arbiter_inA_ack_TB        :  SIGNAL IS "true";
-    ATTRIBUTE dont_touch of arbiter_inA_data_TB       :  SIGNAL IS "true";
-    ATTRIBUTE dont_touch of arbiter_inB_req_TB        :  SIGNAL IS "true";
-    ATTRIBUTE dont_touch of arbiter_inB_ack_TB        :  SIGNAL IS "true";
-    ATTRIBUTE dont_touch of arbiter_inB_data_TB       :  SIGNAL IS "true";
-    ATTRIBUTE dont_touch of arbiter_outA_req_TB       :  SIGNAL IS "true";
-    ATTRIBUTE dont_touch of arbiter_outA_ack_TB       :  SIGNAL IS "true";
-    ATTRIBUTE dont_touch of arbiter_outA_data_TB      :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_inA_req_TB       :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_inA_ack_TB       :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_inB_req_TB       :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_inB_ack_TB       :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_inC_req_TB       :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_inC_ack_TB       :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_inD_req_TB       :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_inD_ack_TB       :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_inE_req_TB       :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_inE_ack_TB       :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_inF_req_TB       :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_inF_ack_TB       :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_inG_req_TB       :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_inG_ack_TB       :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_inH_req_TB       :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_inH_ack_TB       :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_outA_req_TB      :  SIGNAL IS "true";
+    ATTRIBUTE dont_touch of arbiter_outA_ack_TB      :  SIGNAL IS "true";
 
 BEGIN
-
-    inB_ack_TB <= inB_req_TB AFTER 10 ns;
-    inC_ack_TB <= inC_req_TB AFTER 10 ns;
-    inD_ack_TB <= inD_req_TB AFTER 10 ns;
-    inE_ack_TB <= inE_req_TB AFTER 10 ns;
-    inF_ack_TB <= inF_req_TB AFTER 10 ns;
-    inG_ack_TB <= inG_req_TB AFTER 10 ns;
-    inH_ack_TB <= inH_req_TB AFTER 10 ns;
-    inI_ack_TB <= inI_req_TB AFTER 10 ns;
+ 
+    inN_ack_TB  <= inN_req_TB  AFTER 10 ns;
+    inNE_ack_TB <= inNE_req_TB AFTER 10 ns;
+    inE_ack_TB  <= inE_req_TB  AFTER 10 ns;
+    inSE_ack_TB <= inSE_req_TB AFTER 10 ns;
+    inS_ack_TB  <= inS_req_TB  AFTER 10 ns;
+    inSW_ack_TB <= inSW_req_TB AFTER 10 ns;
+    inW_ack_TB  <= inW_req_TB  AFTER 10 ns;
+    inNW_ack_TB <= inNW_req_TB AFTER 10 ns;
 
     stim : PROCESS
     BEGIN
-        inA_req_TB<= '0';
+        inExternal_req_TB <= '0';
         arbiter_inA_req_TB <= '0';
         arbiter_inB_req_TB <= '0';
         arbiter_inC_req_TB <= '0';
@@ -105,82 +117,84 @@ BEGIN
         arbiter_inE_req_TB <= '0';
         arbiter_inF_req_TB <= '0';
         arbiter_inG_req_TB <= '0';
+        
         rst <= '1';
         WAIT FOR 100 ns;
         rst <= '0';
         WAIT FOR 100 ns;
 
-        inA_req_TB <= '1';
-        data_in_TB <= "0000" & x"123"; -- down down, should go 
+        inExternal_req_TB <= '1';
+        inExternal_dat_TB <= "0110" & x"9AB"; -- equal more, should go north
 
-        WAIT UNTIL inD_ack_TB = '1';
+        WAIT UNTIL inN_ack_TB = '1';
 
-        inA_req_TB <= '0';
-        
-        WAIT UNTIL inD_ack_TB = '0';
+        inExternal_req_TB <= '0';
 
-        inA_req_TB <= '1';
-        data_in_TB <= "0001" & x"567"; -- down equal, should go 
+        WAIT UNTIL inN_ack_TB = '0';
 
-        WAIT UNTIL inC_ack_TB = '1';
+        inExternal_req_TB <= '1';
+        inExternal_dat_TB <= "1010" & x"9AB"; -- more more, should go north east
 
-        inA_req_TB <= '0';
+        WAIT UNTIL inNE_ack_TB = '1';
 
-        WAIT UNTIL inC_ack_TB = '0';
+        inExternal_req_TB <= '0';
 
-        inA_req_TB <= '1';
-        data_in_TB <= "0100" & x"9AB"; -- equal down, should go
+        WAIT UNTIL inNE_ack_TB = '0';
+
+        inExternal_req_TB <= '1';
+        inExternal_dat_TB <= "1001" & x"9AB"; -- more equal, should go east
 
         WAIT UNTIL inE_ack_TB = '1';
 
-        inA_req_TB <= '0';
+        inExternal_req_TB <= '0';
 
         WAIT UNTIL inE_ack_TB = '0';
 
-        inA_req_TB <= '1';
-        data_in_TB <= "0010" & x"DEF"; -- down up, should go 
+        inExternal_req_TB <= '1';
+        inExternal_dat_TB <= "1000" & x"9AB"; -- more less, should go south east
 
-        WAIT UNTIL inB_ack_TB = '1';
+        WAIT UNTIL inSE_ack_TB = '1';
 
-        inA_req_TB <= '0';
+        inExternal_req_TB <= '0';
 
-        WAIT UNTIL inB_ack_TB = '0';
+        WAIT UNTIL inSE_ack_TB = '0';
 
-        inA_req_TB <= '1';
-        data_in_TB <= "1000" & x"9AB"; -- up down, should go 
+        inExternal_req_TB <= '1';
+        inExternal_dat_TB <= "0100" & x"9AB"; -- equal less, should go south
 
-        WAIT UNTIL inF_ack_TB = '1';
+        WAIT UNTIL inS_ack_TB = '1';
 
-        inA_req_TB <= '0';
+        inExternal_req_TB <= '0';
 
-        WAIT UNTIL inF_ack_TB = '0';
+        WAIT UNTIL inS_ack_TB = '0';
 
-        inA_req_TB <= '1';
-        data_in_TB <= "1010" & x"9AB"; -- up up, should go
+        inExternal_req_TB <= '1';
+        inExternal_dat_TB <= "0000" & x"123"; -- less less, should go south west
 
-        WAIT UNTIL inH_ack_TB = '1';
+        WAIT UNTIL inSW_ack_TB = '1';
 
-        inA_req_TB <= '0';
+        inExternal_req_TB <= '0';
+        
+        WAIT UNTIL inSW_ack_TB = '0';
 
-        WAIT UNTIL inH_ack_TB = '0';
+        inExternal_req_TB <= '1';
+        inExternal_dat_TB <= "0001" & x"567"; -- less equal, should go west 
 
-        inA_req_TB <= '1';
-        data_in_TB <= "1001" & x"9AB"; -- up equal, should go
+        WAIT UNTIL inW_ack_TB = '1';
 
-        WAIT UNTIL inG_ack_TB = '1';
+        inExternal_req_TB <= '0';
 
-        inA_req_TB <= '0';
+        WAIT UNTIL inW_ack_TB = '0';
 
-        WAIT UNTIL inG_ack_TB = '0';
+        inExternal_req_TB <= '1';
+        inExternal_dat_TB <= "0010" & x"DEF"; -- less more, should go north west
 
-        inA_req_TB <= '1';
-        data_in_TB <= "0110" & x"9AB"; -- equal up, should go
+        WAIT UNTIL inNW_ack_TB = '1';
 
-        WAIT UNTIL inI_ack_TB = '1';
+        inExternal_req_TB <= '0';
 
-        inA_req_TB <= '0';
+        WAIT UNTIL inNW_ack_TB = '0';
 
-        WAIT UNTIL inI_ack_TB = '0';
         ASSERT 0 = 1 REPORT "Bye" SEVERITY failure;
     END PROCESS;
 
@@ -192,86 +206,79 @@ BEGIN
     )
     PORT MAP (
         -- control
-        reset                    =>  rst,
-        -- from internal a
-        rx_internal_a_req_in     =>  arbiter_inA_req_TB ,
-        rx_internal_a_ack_out    =>  arbiter_inA_ack_TB ,
-        rx_internal_a_dat_in     =>  arbiter_inA_data_TB,
-        -- from internal b
-        rx_internal_b_req_in     =>  arbiter_inB_req_TB ,
-        rx_internal_b_ack_out    =>  arbiter_inB_ack_TB ,
-        rx_internal_b_dat_in     =>  arbiter_inB_data_TB,
-        -- from internal c
-        rx_internal_c_req_in     =>  arbiter_inC_req_TB ,
-        rx_internal_c_dat_in     =>   arbiter_inC_data_TB,
-        rx_internal_c_ack_out    =>  arbiter_inC_ack_TB,
-        -- from internal d
-        rx_internal_d_req_in     =>  arbiter_inD_req_TB ,
-        rx_internal_d_dat_in     =>  arbiter_inD_data_TB ,
-        rx_internal_d_ack_out    =>  arbiter_inD_ack_TB,
-        -- from internal e
-        rx_internal_e_req_in     =>  arbiter_inE_req_TB ,
-        rx_internal_e_dat_in     =>  arbiter_inE_data_TB ,
-        rx_internal_e_ack_out    =>  arbiter_inE_ack_TB,
-        -- from internal f
-        rx_internal_f_req_in     =>  arbiter_inF_req_TB ,
-        rx_internal_f_dat_in     =>  arbiter_inF_data_TB ,
-        rx_internal_f_ack_out    =>  arbiter_inF_ack_TB,
-        -- from internal h
-        rx_internal_g_req_in     =>  arbiter_inG_req_TB ,
-        rx_internal_g_dat_in     =>  arbiter_inG_data_TB ,
-        rx_internal_g_ack_out    =>  arbiter_inG_ack_TB,
-        -- from internal g
-        rx_internal_h_req_in     =>  arbiter_inH_req_TB ,
-        rx_internal_h_dat_in     =>  arbiter_inH_data_TB ,
-        rx_internal_h_ack_out    =>  arbiter_inH_ack_TB,
-        -- from external
-        rx_external_req_in       =>  inA_req_TB,
-        rx_external_ack_out      =>  inA_ack_TB,
-        rx_external_dat_in       =>  data_in_TB,
-        -- to external
-        tx_external_req_in       =>  arbiter_outA_req_TB ,
-        tx_external_ack_out      =>  arbiter_outA_ack_TB ,
-        tx_external_dat_in       =>  arbiter_outA_data_TB,
+        reset                            =>  rst,
+        -- from internal a        
+        rx_internal_a_req_in             =>  arbiter_inA_req_TB ,
+        rx_internal_a_ack_out            =>  arbiter_inA_ack_TB ,
+        rx_internal_a_dat_in             =>  arbiter_inA_data_TB,
+        -- from internal b        
+        rx_internal_b_req_in             =>  arbiter_inB_req_TB ,
+        rx_internal_b_ack_out            =>  arbiter_inB_ack_TB ,
+        rx_internal_b_dat_in             =>  arbiter_inB_data_TB,
+        -- from internal c        
+        rx_internal_c_req_in             =>  arbiter_inC_req_TB ,
+        rx_internal_c_dat_in             =>  arbiter_inC_data_TB,
+        rx_internal_c_ack_out            =>  arbiter_inC_ack_TB,
+        -- from internal d        
+        rx_internal_d_req_in             =>  arbiter_inD_req_TB ,
+        rx_internal_d_dat_in             =>  arbiter_inD_data_TB ,
+        rx_internal_d_ack_out            =>  arbiter_inD_ack_TB,
+        -- from internal e        
+        rx_internal_e_req_in             =>  arbiter_inE_req_TB ,
+        rx_internal_e_dat_in             =>  arbiter_inE_data_TB ,
+        rx_internal_e_ack_out            =>  arbiter_inE_ack_TB,
+        -- from internal f        
+        rx_internal_f_req_in             =>  arbiter_inF_req_TB ,
+        rx_internal_f_dat_in             =>  arbiter_inF_data_TB ,
+        rx_internal_f_ack_out            =>  arbiter_inF_ack_TB,
+        -- from internal h        
+        rx_internal_g_req_in             =>  arbiter_inG_req_TB ,
+        rx_internal_g_dat_in             =>  arbiter_inG_data_TB ,
+        rx_internal_g_ack_out            =>  arbiter_inG_ack_TB,
+        -- from internal g        
+        rx_internal_h_req_in             =>  arbiter_inH_req_TB ,
+        rx_internal_h_dat_in             =>  arbiter_inH_data_TB ,
+        rx_internal_h_ack_out            =>  arbiter_inH_ack_TB,
+        -- from external        
+        rx_external_req_in               =>  inExternal_req_TB,
+        rx_external_ack_out              =>  inExternal_ack_TB,
+        rx_external_dat_in               =>  inExternal_dat_TB,
+        -- to external        
+        tx_external_req_in               =>  arbiter_outA_req_TB ,
+        tx_external_ack_out              =>  arbiter_outA_ack_TB ,
+        tx_external_dat_in               =>  arbiter_outA_data_TB,
         -- to internal north west
-        tx_internal_north_west_req_in    =>  inB_req_TB,
-        tx_internal_north_west_dat_in    =>  data_b_TB,
-        tx_internal_north_west_ack_out    =>  inB_ack_TB,
-
+        tx_internal_north_west_req_in    =>  inNW_req_TB,
+        tx_internal_north_west_dat_in    =>  inNW_dat_TB,
+        tx_internal_north_west_ack_out   =>  inNW_ack_TB,
         -- to internal west  
-        tx_internal_west_req_in          =>  inC_req_TB,
-        tx_internal_west_dat_in          =>  data_c_TB,
-        tx_internal_west_ack_out         =>  inC_ack_TB,
-
+        tx_internal_west_req_in          =>  inW_req_TB,
+        tx_internal_west_dat_in          =>  inW_dat_TB,
+        tx_internal_west_ack_out         =>  inW_ack_TB,
         -- to internal south west
-        tx_internal_south_west_req_in    =>  inD_req_TB,
-        tx_internal_south_west_dat_in    =>  data_d_TB,
-        tx_internal_south_west_ack_out   =>  inD_ack_TB,
-
+        tx_internal_south_west_req_in    =>  inSW_req_TB,
+        tx_internal_south_west_dat_in    =>  inSW_dat_TB,
+        tx_internal_south_west_ack_out   =>  inSW_ack_TB,
         -- to internal south
-        tx_internal_south_req_in         =>  inE_req_TB,
-        tx_internal_south_dat_in         =>  data_e_TB,
-        tx_internal_south_ack_out        =>  inE_ack_TB,
-
+        tx_internal_south_req_in         =>  inS_req_TB,
+        tx_internal_south_dat_in         =>  inS_dat_TB,
+        tx_internal_south_ack_out        =>  inS_ack_TB,
         -- to internal south east
-        tx_internal_south_east_req_in    =>  inF_req_TB,
-        tx_internal_south_east_dat_in    =>  data_f_TB,
-        tx_internal_south_east_ack_out   =>  inF_ack_TB,
-
+        tx_internal_south_east_req_in    =>  inSE_req_TB,
+        tx_internal_south_east_dat_in    =>  inSE_dat_TB,
+        tx_internal_south_east_ack_out   =>  inSE_ack_TB,
         -- to internal east
-        tx_internal_east_req_in          =>  inG_req_TB,
-        tx_internal_east_dat_in          =>  data_g_TB,
-        tx_internal_east_ack_out         =>  inG_ack_TB,
-
+        tx_internal_east_req_in          =>  inE_req_TB,
+        tx_internal_east_dat_in          =>  inE_dat_TB,
+        tx_internal_east_ack_out         =>  inE_ack_TB,
         -- to internal north east 
-        tx_internal_north_east_req_in    =>  inH_req_TB,
-        tx_internal_north_east_dat_in    =>  data_h_TB,
-        tx_internal_north_east_ack_out   =>  inH_ack_TB,
-
+        tx_internal_north_east_req_in    =>  inNE_req_TB,
+        tx_internal_north_east_dat_in    =>  inNE_dat_TB,
+        tx_internal_north_east_ack_out   =>  inNE_ack_TB,
         -- to internal north
-        tx_internal_north_req_in         =>  inI_req_TB,
-        tx_internal_north_dat_in         =>  data_i_TB,
-        tx_internal_north_ack_out        =>  inI_ack_TB
+        tx_internal_north_req_in         =>  inN_req_TB,
+        tx_internal_north_dat_in         =>  inN_dat_TB,
+        tx_internal_north_ack_out        =>  inN_ack_TB
     );
 
     END STRUCTURE;
