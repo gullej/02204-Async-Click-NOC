@@ -124,6 +124,9 @@ BEGIN
     rst <= '0';
     WAIT FOR 100 ns;
 
+    -- exhaustive test
+    -- send from each port to all possible one at a time
+
     -- from north
 
     rx_req_in_dem_N_TB  <= '1';
@@ -430,6 +433,8 @@ BEGIN
 
     WAIT UNTIL tx_ack_out_dem_L_TB = '0';
 
+    -- if test gets to here, all is good
+    -- this next part must be verified in waveform
     -- from all at once
 
     rx_req_in_dem_N_TB  <= '1';
@@ -461,22 +466,21 @@ BEGIN
 
     WAIT FOR 100 ns;
 
-    rx_req_in_dem_N_TB   <= '0';
-    rx_req_in_dem_NE_TB  <= '0';
-    rx_req_in_dem_SE_TB  <= '0';
-    rx_req_in_dem_W_TB   <= '0';
-    rx_req_in_dem_NW_TB  <= '0';
+    rx_req_in_dem_N_TB   <= '0'; -- these are all the ones that get served at once
+    rx_req_in_dem_NE_TB  <= '0'; 
+    rx_req_in_dem_SE_TB  <= '0'; 
+    rx_req_in_dem_W_TB   <= '0'; 
+    rx_req_in_dem_NW_TB  <= '0'; 
 
     WAIT FOR 100 ns;
 
-
-    rx_req_in_dem_S_TB   <= '0';
+    rx_req_in_dem_S_TB   <= '0'; -- these had to wait because of the arbiters
     rx_req_in_dem_SW_TB  <= '0';
     tx_req_in_dem_L_TB   <= '0';
 
     WAIT FOR 100 ns;
 
-    rx_req_in_dem_E_TB   <= '0';
+    rx_req_in_dem_E_TB   <= '0'; -- this runt is last, and test is finished
 
     WAIT FOR 50 ns;
     ASSERT 0 = 1 REPORT "Test ended" SEVERITY failure;
